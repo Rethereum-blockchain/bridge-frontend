@@ -31,9 +31,6 @@ function App() {
   const [depositProgress, setDepositProgress] = useState(0); // Progress for deposit and initiate bridge
   const [authorizeProgress, setAuthorizeProgress] = useState(0); // Progress for authorize and complete bridge
 
-
-
-
   useEffect(() => {
     async function initializeWeb3() {
       if (window.ethereum) {
@@ -186,29 +183,68 @@ function App() {
     }
   }
   
-  
+
+// withdrawTokens function implementation
+async function withdrawTokens() {
+  if (!web3 || !actionId) {
+    setErrorMessage("Web3 not initialized or action ID missing.");
+    return;
+  }
+
+  // Ensure the user's wallet is connected to the Hypra network.
+  await ensureCorrectNetwork();
+
+  // Use the lockbox ABI and address for Hypra.
+  const contract = new web3.eth.Contract(hypraLockboxABI, hypraLockboxAddress);
+
+  try {
+    const gasPrice = await web3.eth.getGasPrice();
+    const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
+
+    // Call the withdraw function on the lockbox contract.
+    await contract.methods.withdraw(amountInWei, actionId) // Ensure this matches your contract's method signature
+      .send({ from: userAccount, gasPrice })
+      .on('transactionHash', hash => console.log(`Withdraw transaction hash: ${hash}`))
+      .on('receipt', receipt => {
+        console.log('Withdraw successful', receipt);
+        // Proceed to mint tokens or update frontend message as needed.
+      })
+      .on('error', error => {
+        console.error('Error during withdrawal:', error);
+        setErrorMessage(`Error during withdrawal: ${error.message}`);
+      });
+  } catch (error) {
+    console.error("Error during withdrawal:", error);
+    setErrorMessage(`Error during withdrawal: ${error.message}`);
+  }
+}
 
   async function burnTokens() {
     setErrorMessage(''); // Reset any previous error messages
 
     if (!isValidAddress(recipient)) {
-      setErrorMessage("Invalid recipient address");
-      return;
+        setErrorMessage("Invalid recipient address");
+        return;
     }
 
     if (!isValidAmount(amount)) {
-      setErrorMessage("Amount must be at least 0.0001");
-      return;
+        setErrorMessage("Amount must be at least 0.0001");
+        return;
     }
 
     try {
+        // Ensure the network is correct for the burn operation
         await ensureCorrectNetwork();
+
         const bridgeAddress = bridgeDirection === 'hypraToPolygon' ? hypraBridgeAddress : polygonBridgeAddress;
         const bridgeABI = bridgeDirection === 'hypraToPolygon' ? hypraBridgeABI : polygonBridgeABI;
         const contract = new web3.eth.Contract(bridgeABI, bridgeAddress);
 
         const gasPrice = await web3.eth.getGasPrice();
-        const transaction = await contract.methods.burn(recipient, web3.utils.toWei(amount, 'ether'))
+        const amountInWei = web3.utils.toWei(amount, 'ether');
+
+        // Perform the burn operation
+        const transaction = await contract.methods.burn(recipient, amountInWei)
             .send({ from: userAccount, gasPrice });
 
         console.log("Burn successful");
@@ -220,14 +256,19 @@ function App() {
             const nonce = actionCreatedEvent.returnValues.nonce;
             console.log(`Action ID from ActionCreated: ${actionId}`);
             console.log(`Nonce from ActionCreated: ${nonce}`);
-            
-            setActionId(actionId); // Store actionId for later use in requestAuthorization
-            setBridgeNonce(nonce); // Store nonce for later use in mintTokens
-            
+
+            setActionId(actionId); // Store actionId for later use, such as requesting authorization
+            setBridgeNonce(nonce); // Store nonce for potential use in minting process
+
+            // At this point, the burn action has been performed, and an event emitted.
+            // The Oracle should be set up to listen for these `ActionCreated` events,
+            // verify the burn transaction, and then perform authorization for minting 
+            // on the main chain accordingly.
+
             // Optionally, clear the error message if the transaction was successful
             setErrorMessage('');
         } else {
-            // Handle case where the expected event is not emitted
+            // Handle the case where the expected event is not emitted
             setErrorMessage("Burn successful, but no ActionCreated event found.");
         }
     } catch (error) {
@@ -242,23 +283,41 @@ async function requestAuthorization() {
     return;
   }
 
-  // Switch network based on bridge direction
   const targetChainId = bridgeDirection === 'hypraToPolygon' ? 80001 : 622277;
   await switchNetwork(targetChainId);
 
   const contract = new web3.eth.Contract(polygonBridgeABI, polygonBridgeAddress);
 
   try {
-    // Fetch the current gas cost from the contract
     const currentGasCost = await contract.methods.gasCost().call();
 
-    // Use the fetched gas cost for the value of the transaction
+    // Check if the network supports EIP-1559
+    const latestBlock = await web3.eth.getBlock('latest');
+    const supportsEIP1559 = Boolean(latestBlock.baseFeePerGas);
+
+    let transactionParameters = {
+      from: userAccount,
+      value: currentGasCost, // Dynamic gas cost fetched from the contract
+      gas: 1000000, // Adjust according to your contract method's requirements
+    };
+
+    if (supportsEIP1559) {
+      // If the network supports EIP-1559, set maxPriorityFeePerGas and maxFeePerGas
+      const baseFeePerGas = new BN(latestBlock.baseFeePerGas);
+      const maxPriorityFeePerGas = web3.utils.toWei('2', 'gwei'); // Adjust based on network conditions
+      const maxFeePerGas = baseFeePerGas.add(new BN(maxPriorityFeePerGas)).toString();
+
+      transactionParameters.maxPriorityFeePerGas = maxPriorityFeePerGas;
+      transactionParameters.maxFeePerGas = maxFeePerGas;
+    } else {
+      // For networks not supporting EIP-1559, adjust gasPrice manually
+      const gasPrice = await web3.eth.getGasPrice();
+      const adjustedGasPrice = new BN(gasPrice).mul(new BN('90')).div(new BN('100'));
+      transactionParameters.gasPrice = adjustedGasPrice.toString();
+    }
+
     await contract.methods.requestAuthorization(actionId)
-      .send({
-        from: userAccount,
-        value: currentGasCost, // Use dynamic gas cost
-        gas: 1000000, // You may still need to set a gas limit for the transaction itself
-      })
+      .send(transactionParameters)
       .on('transactionHash', (hash) => {
         console.log(`Authorization request transaction hash: ${hash}`);
         setFrontendMessage("Authorization request sent. Waiting for approval...");
@@ -281,20 +340,6 @@ async function requestAuthorization() {
     setErrorMessage('Error requesting authorization. Please try again.');
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 function waitForAuthorization(actionId) {
   return new Promise((resolve, reject) => {
@@ -329,57 +374,47 @@ function waitForAuthorization(actionId) {
   });
 }
 
-
-
-
-
-
-
-
-
-
- 
   
 async function mintTokens() {
   setErrorMessage(''); // Clear any existing error messages first
 
   if (!web3) {
-      setErrorMessage("Web3 is not initialized");
-      console.error("Web3 is not initialized");
-      return;
+    setErrorMessage("Web3 is not initialized");
+    console.error("Web3 is not initialized");
+    return;
   }
 
   try {
-      // Determine the target network based on the bridge direction
-      const targetChainId = bridgeDirection === 'polygonToHypra' ? 622277 : 80001; // Use actual chain IDs
+    // Determine the target network based on the bridge direction and ensure the wallet is on the correct network
+    const targetChainId = bridgeDirection === 'polygonToHypra' ? 622277 : 80001; // Example: 622277 for Hypra, 80001 for Polygon Mumbai Testnet
+    await switchNetwork(targetChainId);
 
-      // Ensure the wallet is on the correct network
-      await switchNetwork(targetChainId);
+    // Select the appropriate bridge contract based on the direction of the transfer
+    const bridgeAddress = bridgeDirection === 'polygonToHypra' ? hypraBridgeAddress : polygonBridgeAddress;
+    const bridgeABI = bridgeDirection === 'polygonToHypra' ? hypraBridgeABI : polygonBridgeABI;
+    const contract = new web3.eth.Contract(bridgeABI, bridgeAddress);
 
-      const bridgeAddress = bridgeDirection === 'polygonToHypra' ? hypraBridgeAddress : polygonBridgeAddress;
-      const bridgeABI = bridgeDirection === 'polygonToHypra' ? hypraBridgeABI : polygonBridgeABI;
-      const contract = new web3.eth.Contract(bridgeABI, bridgeAddress);
+    const gasPrice = await web3.eth.getGasPrice();
+    const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
 
-      const gasPrice = await web3.eth.getGasPrice();
-      const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
-
-      // Use the stored nonce for the mint operation
-      await contract.methods.mint(recipient, bridgeNonce, amountInWei)
-          .send({ from: userAccount, gasPrice })
-          .on('transactionHash', hash => console.log(`Transaction hash: ${hash}`))
-          .on('receipt', receipt => {
-              console.log('Mint successful', receipt);
-              setErrorMessage(''); // Clear error message on successful transaction
-          })
-          .on('error', error => {
-              console.error('Error minting tokens:', error);
-              setErrorMessage(`Error minting tokens: ${error.message}`);
-          });
+    // Invoke the mint function on the bridge contract with the recipient, nonce, and amount
+    await contract.methods.mint(recipient, bridgeNonce, amountInWei)
+      .send({ from: userAccount, gasPrice })
+      .on('transactionHash', hash => console.log(`Transaction hash: ${hash}`))
+      .on('receipt', receipt => {
+        console.log('Mint successful', receipt);
+        setErrorMessage(''); // Clear error message on successful transaction
+      })
+      .on('error', error => {
+        console.error('Error minting tokens:', error);
+        setErrorMessage(`Error minting tokens: ${error.message}`);
+      });
   } catch (error) {
-      console.error("Error during minting:", error);
-      setErrorMessage(`Error during minting: ${error.message}`);
+    console.error("Error during minting:", error);
+    setErrorMessage(`Error during minting: ${error.message}`);
   }
 }
+
 
 async function depositAndInitiateBridge() {
   setDepositProgress(0); // Reset deposit progress
@@ -392,18 +427,33 @@ async function depositAndInitiateBridge() {
 
   try {
     await ensureCorrectNetwork();
-    setDepositProgress(25); // Example progress update after ensuring network
+    setDepositProgress(25); // Network ensured, progress updated
 
-    await depositTokens();
-    setDepositProgress(50); // Update progress after deposit
+    if (bridgeDirection === 'hypraToPolygon') {
+      // For "Hypra to Polygon", perform deposit then burn
+      await depositTokens(); // Deposit action specific to Hypra to Polygon
+      setDepositProgress(50); // Deposit completed, progress updated
+      
+      await burnTokens();
+      setDepositProgress(75); // Burn completed, progress updated
 
-    await burnTokens();
-    setDepositProgress(100); // Complete the deposit progress
+      // Optionally, you could wait for a confirmation event here before setting to 100%
+      setDepositProgress(100); // Process completed
+    } else {
+      // For "Polygon to Hypra", directly start with the burn step
+      await burnTokens();
+      setDepositProgress(50); // Burn completed, progress updated
+
+      // Optionally, you could wait for a confirmation event here before setting to 100%
+      setDepositProgress(100); // Process completed
+    }
   } catch (error) {
     console.error("Error in deposit and initiate bridge:", error);
     setErrorMessage(error.message || "An error occurred during the deposit and initiate bridge process.");
   }
 }
+
+
 
 async function authorizeAndCompleteBridge() {
   setAuthorizeProgress(0); // Reset authorize progress
@@ -421,7 +471,13 @@ async function authorizeAndCompleteBridge() {
 
     // Assuming requestAuthorization is asynchronous and takes some time
     await waitForAuthorization(actionId); // Wait for authorization to be confirmed
-    setAuthorizeProgress(75); // Update progress after authorization confirmed
+    setAuthorizeProgress(50); // Update progress after authorization confirmed
+
+    if (bridgeDirection === 'polygonToHypra') {
+      // If bridging from Polygon to Hypra, withdraw tokens from lockbox after authorization
+      await withdrawTokens(); // Withdraw tokens from the lockbox on Hypra
+      setAuthorizeProgress(75); // Update progress after withdrawal
+    }
 
     await mintTokens(); // Proceed to mint tokens once authorization is confirmed
     setAuthorizeProgress(100); // Complete the authorize progress
@@ -430,11 +486,6 @@ async function authorizeAndCompleteBridge() {
     setErrorMessage(error.message);
   }
 }
-
-
-
-
-
 
 return (
   <div className="app-container">

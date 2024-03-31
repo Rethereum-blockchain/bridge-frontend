@@ -39,6 +39,7 @@ function App() {
         try {
           const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
           setUserAccount(accounts[0]);
+          setRecipient(accounts[0]); // Set the recipient address here
         } catch (error) {
           console.error("Error connecting to MetaMask:", error);
         }
@@ -47,7 +48,7 @@ function App() {
       }
     }
     initializeWeb3();
-  }, []);
+  }, []); // Note: This useEffect will run once after the component mounts
 
   useEffect(() => {
     let checkInterval = null;
@@ -75,6 +76,7 @@ function App() {
       try {
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         setUserAccount(accounts[0]);
+        setRecipient(accounts[0]); // Prefill the recipient address with the user's address
       } catch (error) {
         console.error("Error connecting to MetaMask:", error);
       }
@@ -82,6 +84,7 @@ function App() {
       alert("Please install MetaMask to use this feature.");
     }
   }
+  
 
   async function switchNetwork(targetChainId) {
     try {
@@ -184,41 +187,43 @@ function App() {
   }
   
 
-// withdrawTokens function implementation
-async function withdrawTokens() {
-  if (!web3 || !actionId) {
-    setErrorMessage("Web3 not initialized or action ID missing.");
-    return;
+  async function withdrawTokens() {
+    // Ensure the function is targeting the Hypra network and lockbox for withdrawal
+    if (!web3) {
+      setErrorMessage("Web3 is not initialized");
+      console.error("Web3 is not initialized");
+      return;
+    }
+  
+    // First, ensure you are on the correct Hypra network for the withdrawal
+    const hypraChainId = 622277; // Assuming this is the correct chain ID for Hypra
+    await switchNetwork(hypraChainId);
+  
+    // Use the lockbox ABI and address for Hypra
+    const contract = new web3.eth.Contract(hypraLockboxABI, hypraLockboxAddress);
+  
+    try {
+      const gasPrice = await web3.eth.getGasPrice();
+      // Withdraw the specific amount. Ensure 'amountInWei' is defined or calculate it based on the required amount
+      const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
+  
+      // Perform the withdrawal from the Hypra lockbox
+      await contract.methods.withdraw(amountInWei)
+        .send({ from: userAccount, gasPrice })
+        .on('transactionHash', hash => console.log(`Withdraw transaction hash: ${hash}`))
+        .on('receipt', receipt => {
+          console.log('Withdraw successful', receipt);
+        })
+        .on('error', error => {
+          console.error('Error during withdrawal:', error);
+          setErrorMessage(`Error during withdrawal: ${error.message}`);
+        });
+    } catch (error) {
+      console.error("Error during withdrawal on Hypra:", error);
+      setErrorMessage(`Error during withdrawal: ${error.message}`);
+    }
   }
-
-  // Ensure the user's wallet is connected to the Hypra network.
-  await ensureCorrectNetwork();
-
-  // Use the lockbox ABI and address for Hypra.
-  const contract = new web3.eth.Contract(hypraLockboxABI, hypraLockboxAddress);
-
-  try {
-    const gasPrice = await web3.eth.getGasPrice();
-    const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
-
-    // Call the withdraw function on the lockbox contract.
-    await contract.methods.withdraw(amountInWei, actionId) // Ensure this matches your contract's method signature
-      .send({ from: userAccount, gasPrice })
-      .on('transactionHash', hash => console.log(`Withdraw transaction hash: ${hash}`))
-      .on('receipt', receipt => {
-        console.log('Withdraw successful', receipt);
-        // Proceed to mint tokens or update frontend message as needed.
-      })
-      .on('error', error => {
-        console.error('Error during withdrawal:', error);
-        setErrorMessage(`Error during withdrawal: ${error.message}`);
-      });
-  } catch (error) {
-    console.error("Error during withdrawal:", error);
-    setErrorMessage(`Error during withdrawal: ${error.message}`);
-  }
-}
-
+  
   async function burnTokens() {
     setErrorMessage(''); // Reset any previous error messages
 
@@ -276,7 +281,7 @@ async function withdrawTokens() {
         setErrorMessage(`Error during burn: ${error.message}`);
     }
 }
-
+  
 async function requestAuthorization() {
   if (!web3 || !actionId) {
     setErrorMessage("Web3 not initialized or Action ID unavailable.");
@@ -374,7 +379,6 @@ function waitForAuthorization(actionId) {
   });
 }
 
-  
 async function mintTokens() {
   setErrorMessage(''); // Clear any existing error messages first
 
@@ -385,25 +389,36 @@ async function mintTokens() {
   }
 
   try {
-    // Determine the target network based on the bridge direction and ensure the wallet is on the correct network
-    const targetChainId = bridgeDirection === 'polygonToHypra' ? 622277 : 80001; // Example: 622277 for Hypra, 80001 for Polygon Mumbai Testnet
+    let targetChainId, bridgeAddress, bridgeABI;
+    if (bridgeDirection === 'polygonToHypra') {
+      targetChainId = 622277; // Hypra's Chain ID
+      bridgeAddress = hypraBridgeAddress;
+      bridgeABI = hypraBridgeABI;
+    } else {
+      targetChainId = 80001; // Polygon Mumbai Testnet Chain ID
+      bridgeAddress = polygonBridgeAddress;
+      bridgeABI = polygonBridgeABI;
+    }
+
     await switchNetwork(targetChainId);
 
-    // Select the appropriate bridge contract based on the direction of the transfer
-    const bridgeAddress = bridgeDirection === 'polygonToHypra' ? hypraBridgeAddress : polygonBridgeAddress;
-    const bridgeABI = bridgeDirection === 'polygonToHypra' ? hypraBridgeABI : polygonBridgeABI;
     const contract = new web3.eth.Contract(bridgeABI, bridgeAddress);
 
     const gasPrice = await web3.eth.getGasPrice();
     const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
 
-    // Invoke the mint function on the bridge contract with the recipient, nonce, and amount
     await contract.methods.mint(recipient, bridgeNonce, amountInWei)
       .send({ from: userAccount, gasPrice })
       .on('transactionHash', hash => console.log(`Transaction hash: ${hash}`))
-      .on('receipt', receipt => {
+      .on('receipt', async (receipt) => {
         console.log('Mint successful', receipt);
         setErrorMessage(''); // Clear error message on successful transaction
+
+        // If bridging from Polygon to Hypra, perform the withdraw action after minting
+        if (bridgeDirection === 'polygonToHypra') {
+          console.log('Proceeding to withdraw tokens...');
+          await withdrawTokens(); // Call the withdraw function after minting
+        }
       })
       .on('error', error => {
         console.error('Error minting tokens:', error);
@@ -414,6 +429,8 @@ async function mintTokens() {
     setErrorMessage(`Error during minting: ${error.message}`);
   }
 }
+
+
 
 
 async function depositAndInitiateBridge() {
@@ -491,9 +508,11 @@ return (
   <div className="app-container">
     <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
     <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) Between Hypra and Polygon</p>
+    
     <button onClick={connectWallet} className="connect-wallet-btn">
       {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
     </button>
+    
     <div className="input-group">
       <label>Bridge Direction:</label>
       <select value={bridgeDirection} onChange={(e) => setBridgeDirection(e.target.value)}>
@@ -501,10 +520,22 @@ return (
         <option value="polygonToHypra">Polygon to Hypra</option>
       </select>
     </div>
+    
     <div className="input-group">
-      <input type="text" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="Amount to transfer" />
-      <input type="text" value={recipient} onChange={(e) => setRecipient(e.target.value)} placeholder="Recipient address" />
+      <input 
+        type="text" 
+        value={amount} 
+        onChange={(e) => setAmount(e.target.value)} 
+        placeholder="Amount to transfer" 
+      />
+      <input 
+        type="text" 
+        value={recipient} 
+        onChange={(e) => setRecipient(e.target.value)} 
+        placeholder="Recipient address" 
+      />
     </div>
+    
     {/* Deposit & Initiate Bridge Button and Progress Bar */}
     <button onClick={depositAndInitiateBridge} className="action-btn">(step 1) Deposit & Initiate Bridge</button>
     {depositProgress > 0 && (
@@ -513,6 +544,7 @@ return (
         <p className="progress-text">Step 1: {depositProgress}%</p>
       </div>
     )}
+    
     {/* Authorize & Complete Bridge Button and Progress Bar */}
     <button onClick={authorizeAndCompleteBridge} className="action-btn">(step 2) Authorize & Complete Bridge</button>
     {authorizeProgress > 0 && (
@@ -521,10 +553,12 @@ return (
         <p className="progress-text">Step 2: {authorizeProgress}%</p>
       </div>
     )}
+    
     {errorMessage && <div className="error-message">{errorMessage}</div>}
     {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
   </div>
 );
+
 
 
 }

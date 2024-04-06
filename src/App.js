@@ -4,6 +4,8 @@ import './App.css';
 import BN from 'bn.js';
 
 
+
+
 // Placeholder ABIs and addresses - replace these with your actual contract details
 const hypraLockboxABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_xerc20","internalType":"address"},{"type":"address","name":"_erc20","internalType":"address"},{"type":"bool","name":"_isNative","internalType":"bool"}]},{"type":"error","name":"IXERC20Lockbox_Native","inputs":[]},{"type":"error","name":"IXERC20Lockbox_NotNative","inputs":[]},{"type":"error","name":"IXERC20Lockbox_WithdrawFailed","inputs":[]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"ERC20","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"IS_NATIVE","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IPermit2"}],"name":"PERMIT2","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IXERC20"}],"name":"XERC20","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositWithPermitAllowance","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"},{"type":"address","name":"_owner","internalType":"address"},{"type":"tuple","name":"_permit","internalType":"struct IAllowanceTransfer.PermitSingle","components":[{"type":"tuple","name":"details","internalType":"struct IAllowanceTransfer.PermitDetails","components":[{"type":"address","name":"token","internalType":"address"},{"type":"uint160","name":"amount","internalType":"uint160"},{"type":"uint48","name":"expiration","internalType":"uint48"},{"type":"uint48","name":"nonce","internalType":"uint48"}]},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"sigDeadline","internalType":"uint256"}]},{"type":"bytes","name":"_signature","internalType":"bytes"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}]; // ABI for Hypra lockbox contract
 const polygonLockboxABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_xerc20","internalType":"address"},{"type":"address","name":"_erc20","internalType":"address"},{"type":"bool","name":"_isNative","internalType":"bool"}]},{"type":"error","name":"IXERC20Lockbox_Native","inputs":[]},{"type":"error","name":"IXERC20Lockbox_NotNative","inputs":[]},{"type":"error","name":"IXERC20Lockbox_WithdrawFailed","inputs":[]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"ERC20","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"IS_NATIVE","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IPermit2"}],"name":"PERMIT2","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IXERC20"}],"name":"XERC20","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositWithPermitAllowance","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"},{"type":"address","name":"_owner","internalType":"address"},{"type":"tuple","name":"_permit","internalType":"struct IAllowanceTransfer.PermitSingle","components":[{"type":"tuple","name":"details","internalType":"struct IAllowanceTransfer.PermitDetails","components":[{"type":"address","name":"token","internalType":"address"},{"type":"uint160","name":"amount","internalType":"uint160"},{"type":"uint48","name":"expiration","internalType":"uint48"},{"type":"uint48","name":"nonce","internalType":"uint48"}]},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"sigDeadline","internalType":"uint256"}]},{"type":"bytes","name":"_signature","internalType":"bytes"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}]; // ABI for Polygon lockbox contract
@@ -30,6 +32,9 @@ function App() {
   const [frontendMessage, setFrontendMessage] = useState(''); // State to hold frontend messages
   const [depositProgress, setDepositProgress] = useState(0); // Progress for deposit and initiate bridge
   const [authorizeProgress, setAuthorizeProgress] = useState(0); // Progress for authorize and complete bridge
+
+
+
 
   useEffect(() => {
     async function initializeWeb3() {
@@ -70,6 +75,97 @@ function App() {
     };
   }, [actionId]); // Re-run the effect if actionId changes
   
+ 
+
+// Utility function to switch to Hypra Mainnet
+async function switchToHypraMainnet() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: Web3.utils.toHex(622277) }], // Hexadecimal chainId for Hypra Mainnet
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      console.error('The Hypra Mainnet is not available in your MetaMask. Please add it manually.');
+    } else {
+      console.error('Error switching to Hypra Mainnet:', error);
+    }
+  }
+}
+
+// Utility function to switch to Polygon Mumbai Testnet
+async function switchToPolygonMumbai() {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: Web3.utils.toHex(80001) }], // Hexadecimal chainId for Polygon Mumbai
+    });
+  } catch (error) {
+    if (error.code === 4902) {
+      console.error('The Polygon Mumbai Testnet is not available in your MetaMask. Please add it manually.');
+    } else {
+      console.error('Error switching to Polygon Mumbai:', error);
+    }
+  }
+}
+
+// Function to add WHYP Token to MetaMask
+async function addWHYPToken() {
+  try {
+    await switchToHypraMainnet(); // Ensure you're on Hypra Mainnet
+    const wasAdded = await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: '0x0000000000079c645A9bDE0Bd8Af1775FAF5598A', // WHYP Token Contract Address
+          symbol: 'WHYP',
+          decimals: 18,
+          image: 'URL_TO_AN_IMAGE_OF_THE_TOKEN', // Optional image URL
+        },
+      },
+    });
+
+    if (wasAdded) {
+      console.log('WHYP Token has been added to your wallet!');
+    } else {
+      console.log('WHYP Token has not been added to your wallet.');
+    }
+  } catch (error) {
+    console.error("Error adding WHYP Token:", error);
+  }
+}
+
+// Function to add HYP Token to MetaMask
+async function addHYPToken() {
+  try {
+    await switchToPolygonMumbai(); // Ensure you're on Polygon Mumbai
+    const wasAdded = await window.ethereum.request({
+      method: 'wallet_watchAsset',
+      params: {
+        type: 'ERC20',
+        options: {
+          address: '0x5DEd00279f3171914498d2E44E0daeFf5564f28E', // HYP Token Contract Address
+          symbol: 'HYP',
+          decimals: 18,
+          image: 'URL_TO_AN_IMAGE_OF_THE_TOKEN', // Optional image URL
+        },
+      },
+    });
+
+    if (wasAdded) {
+      console.log('HYP Token has been added to your wallet!');
+    } else {
+      console.log('HYP Token has not been added to your wallet.');
+    }
+  } catch (error) {
+    console.error("Error adding HYP Token:", error);
+  }
+}
+
+
+
+
 
   async function connectWallet() {
     if (window.ethereum) {
@@ -224,6 +320,13 @@ function App() {
     }
   }
   
+
+
+
+
+
+
+  
   async function burnTokens() {
     setErrorMessage(''); // Reset any previous error messages
 
@@ -281,7 +384,13 @@ function App() {
         setErrorMessage(`Error during burn: ${error.message}`);
     }
 }
+
   
+  
+
+
+
+
 async function requestAuthorization() {
   if (!web3 || !actionId) {
     setErrorMessage("Web3 not initialized or Action ID unavailable.");
@@ -346,6 +455,21 @@ async function requestAuthorization() {
   }
 }
 
+
+  
+
+
+
+
+
+
+  
+
+  
+  
+
+
+
 function waitForAuthorization(actionId) {
   return new Promise((resolve, reject) => {
     if (!web3 || !actionId) {
@@ -379,6 +503,17 @@ function waitForAuthorization(actionId) {
   });
 }
 
+
+
+
+
+
+
+
+
+
+ 
+  
 async function mintTokens() {
   setErrorMessage(''); // Clear any existing error messages first
 
@@ -504,6 +639,12 @@ async function authorizeAndCompleteBridge() {
   }
 }
 
+
+
+
+
+
+
 return (
   <>
     <header className="app-header">
@@ -570,6 +711,9 @@ return (
     </div>
   </>
 );
+
+
+
 
 
 

@@ -1,205 +1,308 @@
-/* Base styles */
 body, html {
   height: 100%;
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  background: linear-gradient(145deg, #121212, #1D1D1D);
+  background: #121212; /* Dark mode solid color */
   color: #FFFFFF;
   overflow-x: hidden;
 }
 
 #root {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column; /* Organize content in a vertical flow */
+  justify-content: flex-start; /* Start content from the top */
+  align-items: center; /* Center content horizontally */
   min-height: 100vh;
   padding: 20px;
 }
 
-.app-container {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: stretch; /* Ensure elements stretch to fill the container */
+.app-header {
   width: 100%;
-  max-width: 500px;
+  padding: 20px 20px 0; /* Padding adjusted for spacing */
+  position: fixed; /* Fixed at the top */
+  top: 0; /* Align top */
+  z-index: 100; /* Ensure it's above other content */
+  background: #121212; /* Header background matches the body */
+  display: flex;
+  flex-direction: column; /* Elements organized in a column */
+  align-items: center; /* Center items horizontally */
 }
+
+.header-buttons {
+  display: flex;
+  justify-content: center; /* Center buttons horizontally */
+  gap: 8px; /* Space between buttons */
+}
+
+.small-action-btn {
+  /* Your existing button styles */
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  height: 38px;
+  /* Other necessary styles */
+}
+
+.header-instruction {
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  text-align: center; /* Center the instructional text */
+  margin-top: 10px; /* Space after the buttons */
+  padding-bottom: 20px; /* Padding at the bottom for space */
+  width: 100%; /* Full width to ensure it's on a new line */
+}
+
+.app-container {
+  margin-top: 160px; /* Increased margin-top for header clearance */
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  backdrop-filter: blur(10px); /* Blur effect for backdrop */
+  padding: 40px; /* Padding inside container */
+  border-radius: 20px; /* Rounded corners for container */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Shadow effect */
+  display: flex;
+  flex-direction: column; /* Content organized vertically */
+  align-items: stretch; /* Stretch elements to fill the container */
+  width: 100%;
+  max-width: 500px; /* Maximum width of container */
+  margin-bottom: 60px; /* Space at the bottom of the container */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .app-container {
+    margin-top: 60px; /* Less space above container on smaller screens */
+  }
+}
+
+/* Styles for subtitle text */
 .subtitle-text {
-  font-size: 1rem; /* Smaller font size for the subtitle */
-  color: #BB86FC; /* Matching the color scheme */
-  text-align: center; /* Center-align the subtitle */
-  margin-bottom: 20px; /* Space between the subtitle and the next element */
+  font-size: 1rem; /* Size of subtitle text */
+  color: #BB86FC; /* Color for subtitle text */
+  text-align: center; /* Centering subtitle text */
+  margin-bottom: 20px; /* Space below subtitle text */
 }
 
+/* Styles for artistic text */
 .artistic-text {
-  font-size: 2rem;
-  color: #BB86FC;
-  filter: drop-shadow(2px 4px 6px #7C4DFF);
-  margin-bottom: 30px;
-  text-align: center;
+  font-size: 2rem; /* Size of artistic text */
+  color: #BB86FC; /* Color for artistic text */
+  filter: drop-shadow(2px 4px 6px #7C4DFF); /* Shadow effect for text */
+  margin-bottom: 30px; /* Space below artistic text */
+  text-align: center; /* Centering artistic text */
 }
 
-/* Apply box-sizing globally to ensure consistent sizing */
+/* Global box-sizing for consistent element sizing */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* Uniform sizing for input, select, and buttons */
+/* Uniform styling for buttons, selects, and text inputs */
 button, select, input[type="text"] {
-  background: #333333;
-  color: #BB86FC;
-  border: none;
-  padding: 12px 20px; /* Adjust padding if necessary */
-  margin-bottom: 10px; /* Consistent margin for spacing */
-  border-radius: 25px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  font-size: 1rem;
-  width: 100%; /* Full width */
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
-  height: 48px; /* Uniform height */
+  background: #333333; /* Background color */
+  color: #BB86FC; /* Text color */
+  border: none; /* No border */
+  padding: 12px 20px; /* Padding inside elements */
+  margin-bottom: 10px; /* Space below elements */
+  border-radius: 25px; /* Rounded corners for elements */
+  cursor: pointer; /* Cursor for clickable items */
+  transition: transform 0.2s, box-shadow 0.2s; /* Animation transitions */
+  font-size: 1rem; /* Text size */
+  width: 100%; /* Full width of parent container */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); /* Shadow effect */
+  height: 48px; /* Height of elements */
 }
 
+/* Hover styles for buttons, selects, and text inputs */
 button:hover, select:hover, input[type="text"]:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px); /* Move up slightly on hover */
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4); /* Shadow effect on hover */
 }
 
+/* Active styles for buttons, selects, and text inputs */
 button:active, select:active, input[type="text"]:active {
-  transform: translateY(1px);
+  transform: translateY(1px); /* Move down slightly when clicked */
 }
 
+/* Gradient background for certain buttons */
 .connect-wallet-btn, .action-btn {
-  background: linear-gradient(145deg, #7C4DFF, #BB86FC);
-  color: #FFFFFF;
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC); /* Gradient color */
+  color: #FFFFFF; /* Text color */
 }
 
+/* Styles for text inputs */
 input[type="text"] {
-  background-color: #2C2C2C;
-  color: #BB86FC;
-  border: 2px solid #7C4DFF;
+  background-color: #2C2C2C; /* Background color */
+  color: #BB86FC; /* Text color */
+  border: 2px solid #7C4DFF; /* Border color */
 }
 
+/* Placeholder styles for text inputs */
 input[type="text"]::placeholder {
-  color: #A1A1A1;
+  color: #A1A1A1; /* Placeholder text color */
 }
 
+/* Focus styles for text inputs */
 input[type="text"]:focus {
-  border-color: #BB86FC;
+  border-color: #BB86FC; /* Border color when element is focused */
 }
 
-/* Error Message Styles */
+/* Styles for error messages */
 .error-message {
-  color: #FF5555;
-  font-size: 0.9rem;
-  margin-top: -5px;
-  margin-bottom: 10px;
-  text-align: left;
-  width: 100%;
+  color: #FF5555; /* Text color for errors */
+  font-size: 0.9rem; /* Text size for errors */
+  margin-top: -5px; /* Space above error message */
+  margin-bottom: 10px; /* Space below error message */
+  text-align: left; /* Aligning text to the left */
+  width: 100%; /* Full width of error message */
 }
 
-/* Input Error Styles */
+/* Styles for input with error */
 .input-error {
-  border: 2px solid #FF5555;
-  animation: shake 0.3s;
+  border: 2px solid #FF5555; /* Border color for input with error */
+  animation: shake 0.3s; /* Shaking animation for input with error */
 }
 
+/* Keyframes for shake animation */
 @keyframes shake {
-  0% { transform: translateX(-5px); }
+  0%, 100% { transform: translateX(-5px); }
   50% { transform: translateX(5px); }
-  100% { transform: translateX(-5px); }
 }
 
+/* Focus styles for input with error */
 input[type="text"].input-error:focus {
-  border-color: #FF5555;
+  border-color: #FF5555; /* Border color for focused input with error */
 }
 
-/* Responsive adjustments */
+/* Media queries for responsive adjustments */
 @media (max-width: 768px) {
   .app-container {
-    padding: 20px;
+    padding: 20px; /* Padding inside container on smaller screens */
   }
 
   .artistic-text {
-    font-size: 1.8rem;
+    font-size: 1.8rem; /* Size of artistic text on smaller screens */
   }
 
   button, select, input[type="text"] {
-    padding: 10px 15px;
-    height: 40px; /* Adjusted height for smaller screens */
+    padding: 10px 15px; /* Padding inside elements on smaller screens */
+    height: 40px; /* Height of elements on smaller screens */
   }
 
   .error-message {
-    font-size: 0.8rem;
+    font-size: 0.8rem; /* Size of error message text on smaller screens */
   }
 }
 
 @media only screen and (max-width: 600px) {
   .app-container {
-    border-radius: 15px;
+    border-radius: 15px; /* Rounded corners for container on very small screens */
   }
 
   button, select, input[type="text"] {
-    font-size: 0.9rem;
-    padding: 8px 14px;
-    height: 38px; /* Further adjusted for very small screens */
+    font-size: 0.9rem; /* Size of text inside elements on very small screens */
+    padding: 8px 14px; /* Padding inside elements on very small screens */
+    height: 38px; /* Height of elements on very small screens */
   }
 
   .error-message {
-    font-size: 0.75rem;
+    font-size: 0.75rem; /* Size of error message text on very small screens */
   }
 }
-/* Progress Bar Container General Style */
+
+/* Styles for progress bar containers */
 .progress-container {
-  margin-top: 10px; /* Reduced spacing from the preceding element for closeness */
-  margin-bottom: 20px; /* Space before the next element starts */
-  padding: 10px;
-  background: #333333; /* Matching the input and button backgrounds */
-  border-radius: 25px; /* Rounded corners */
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); /* Consistent shadow effect */
+  margin-top: 10px; /* Space above progress container */
+  margin-bottom: 20px; /* Space below progress container */
+  padding: 10px; /* Padding inside progress container */
+  background: #333333; /* Background color for progress container */
+  border-radius: 25px; /* Rounded corners for progress container */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3); /* Shadow effect for progress container */
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Space between progress bar and percentage text */
+  justify-content: space-between; /* Space between progress bar and text */
 }
 
-/* Specific Progress Bar Adjustments */
+/* Styles for specific progress bars */
 .progress-deposit, .progress-authorize {
-  margin-top: 5px; /* Even closer to their respective buttons */
-  margin-bottom: 10px; /* Prepare for the next element */
+  margin-top: 5px; /* Space above specific progress bars */
+  margin-bottom: 10px; /* Space below specific progress bars */
 }
 
-/* Progress Bar Element */
+/* Styles for progress bar element */
 .progress-bar {
-  -webkit-appearance: none; /* Reset default style */
+  -webkit-appearance: none; /* Reset default style for Webkit browsers */
   appearance: none;
-  width: 85%; /* Adjust based on your layout */
-  height: 20px; /* Height of the progress bar */
-  border-radius: 25px; /* Rounded corners for the progress bar */
+  width: 85%; /* Width of progress bar */
+  height: 20px; /* Height of progress bar */
+  border-radius: 25px; /* Rounded corners for progress bar */
 }
 
+/* Styles for Webkit progress bar */
 .progress-bar::-webkit-progress-bar {
-  background-color: #2C2C2C; /* Background of the progress bar */
-  border-radius: 25px; /* Ensure the background matches the bar's border-radius */
+  background-color: #2C2C2C; /* Background color for progress bar */
+  border-radius: 25px; /* Rounded corners for progress bar background */
 }
 
+/* Styles for Webkit progress value */
 .progress-bar::-webkit-progress-value {
-  background: linear-gradient(to right, #7C4DFF, #BB86FC); /* Gradient fill for the progress */
-  border-radius: 25px; /* Rounded corners for the progress value */
+  background: linear-gradient(to right, #7C4DFF, #BB86FC); /* Gradient for progress value */
+  border-radius: 25px; /* Rounded corners for progress value */
 }
 
+/* Styles for Mozilla progress bar */
 .progress-bar::-moz-progress-bar {
-  background: linear-gradient(to right, #7C4DFF, #BB86FC); /* Gradient for Mozilla */
-  border-radius: 25px; /* Rounded corners for the progress value */
+  background: linear-gradient(to right, #7C4DFF, #BB86FC); /* Gradient for progress value in Mozilla */
+  border-radius: 25px; /* Rounded corners for progress value in Mozilla */
 }
 
-/* Progress Percentage Text */
+/* Styles for progress percentage text */
 .progress-text {
-  width: 15%; /* Adjust based on your layout */
+  width: 15%; /* Width of progress text */
+  text-align: center; /* Centering progress text */
+  font-weight: bold; /* Bold font for progress text */
+  color: #BB86FC; /* Color for progress text */
+}
+
+.small-action-btn {
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC);
+  color: #FFFFFF;
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  margin: 8px; /* Margin adjusted for spacing */
+  height: 38px;
+}
+
+.small-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.small-action-btn:active {
+  transform: translateY(1px);
+}
+
+/* Styles for subtitle text */
+.subtitle-text {
+  font-size: 1rem;
+  color: #BB86FC;
   text-align: center;
-  font-weight: bold;
-  color: #BB86FC; /* Matching the color scheme */
+  margin-bottom: 10px; /* Reduced from 20px for less space */
+}
+
+/* Styles for token buttons container */
+.token-buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0; /* Reduced top margin */
+}
+
+/* Styles for header instructions */
+.header-instruction {
+  color: #FFFFFF; /* or any other color that fits your design */
+  font-size: 0.8rem; /* Adjust as needed */
+  margin-top: 10px; /* Space between the buttons and the text */
+  text-align: center; /* Center the text if that suits your design */
 }

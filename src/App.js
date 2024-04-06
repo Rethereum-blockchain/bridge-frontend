@@ -505,58 +505,70 @@ async function authorizeAndCompleteBridge() {
 }
 
 return (
-  <div className="app-container">
-    <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
-    <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) Between Hypra and Polygon</p>
-    
-    <button onClick={connectWallet} className="connect-wallet-btn">
-      {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
-    </button>
-    
-    <div className="input-group">
-      <label>Bridge Direction:</label>
-      <select value={bridgeDirection} onChange={(e) => setBridgeDirection(e.target.value)}>
-        <option value="hypraToPolygon">Hypra to Polygon</option>
-        <option value="polygonToHypra">Polygon to Hypra</option>
-      </select>
-    </div>
-    
-    <div className="input-group">
-      <input 
-        type="text" 
-        value={amount} 
-        onChange={(e) => setAmount(e.target.value)} 
-        placeholder="Amount to transfer" 
-      />
-      <input 
-        type="text" 
-        value={recipient} 
-        onChange={(e) => setRecipient(e.target.value)} 
-        placeholder="Recipient address" 
-      />
-    </div>
-    
-    {/* Deposit & Initiate Bridge Button and Progress Bar */}
-    <button onClick={depositAndInitiateBridge} className="action-btn">(step 1) Deposit & Initiate Bridge</button>
-    {depositProgress > 0 && (
-      <div className="progress-container progress-deposit">
-        <progress value={depositProgress} max="100" className="progress-bar"></progress>
-        <p className="progress-text">Step 1: {depositProgress}%</p>
+  <>
+    <header className="app-header">
+      {/* Buttons */}
+      <div className="header-buttons">
+        <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
+        <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
+        <button onClick={connectWallet} className="small-action-btn">
+          {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
+        </button>
       </div>
-    )}
+      {/* Instructional text below buttons */}
+      <p className="header-instruction">
+        Ensure you have both of these tokens imported into your wallet before using the bridge.
+      </p>
+    </header>
+    <div className="app-container">
+      <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
+      <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) Between Hypra and Polygon.</p>
     
-    {/* Authorize & Complete Bridge Button and Progress Bar */}
-    <button onClick={authorizeAndCompleteBridge} className="action-btn">(step 2) Authorize & Complete Bridge</button>
-    {authorizeProgress > 0 && (
-      <div className="progress-container progress-authorize">
-        <progress value={authorizeProgress} max="100" className="progress-bar"></progress>
-        <p className="progress-text">Step 2: {authorizeProgress}%</p>
+      <div className="input-group">
+        <label>Bridge Direction:</label>
+        <select value={bridgeDirection} onChange={(e) => setBridgeDirection(e.target.value)}>
+          <option value="hypraToPolygon">Hypra to Polygon</option>
+          <option value="polygonToHypra">Polygon to Hypra</option>
+        </select>
       </div>
-    )}
     
-    {errorMessage && <div className="error-message">{errorMessage}</div>}
-    {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
-  </div>
+      <div className="input-group">
+        <input 
+          type="text" 
+          value={amount} 
+          onChange={(e) => setAmount(e.target.value)} 
+          placeholder="Amount to transfer" 
+        />
+        <input 
+          type="text" 
+          value={recipient} 
+          onChange={(e) => setRecipient(e.target.value)} 
+          placeholder="Recipient address" 
+        />
+      </div>
+    
+      {/* Deposit & Initiate Bridge Button and Progress Bar */}
+      <button onClick={depositAndInitiateBridge} className="action-btn">(step 1) Deposit & Initiate Bridge</button>
+      {depositProgress > 0 && (
+        <div className="progress-container progress-deposit">
+          <progress value={depositProgress} max="100" className="progress-bar"></progress>
+          <p className="progress-text">Step 1: {depositProgress}%</p>
+        </div>
+      )}
+    
+      {/* Authorize & Complete Bridge Button and Progress Bar */}
+      <button onClick={authorizeAndCompleteBridge} className="action-btn">(step 2) Authorize & Complete Bridge</button>
+      {authorizeProgress > 0 && (
+        <div className="progress-container progress-authorize">
+          <progress value={authorizeProgress} max="100" className="progress-bar"></progress>
+          <p className="progress-text">Step 2: {authorizeProgress}%</p>
+        </div>
+      )}
+    
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
+      {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
+    </div>
+  </>
 );
 
 

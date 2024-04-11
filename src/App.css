@@ -9,46 +9,89 @@ body, html {
 
 #root {
   display: flex;
-  flex-direction: column; /* Organize content in a vertical flow */
-  justify-content: flex-start; /* Start content from the top */
-  align-items: center; /* Center content horizontally */
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   min-height: 100vh;
   padding: 20px;
 }
 
 .app-header {
-  width: 100%;
-  padding: 20px 20px 0; /* Padding adjusted for spacing */
-  position: fixed; /* Fixed at the top */
-  top: 0; /* Align top */
-  z-index: 100; /* Ensure it's above other content */
-  background: #121212; /* Header background matches the body */
   display: flex;
-  flex-direction: column; /* Elements organized in a column */
-  align-items: center; /* Center items horizontally */
+  align-items: center;
+  justify-content: space-between; /* Aligns children to the sides and center */
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #121212;
+  z-index: 100;
 }
 
-.header-buttons {
+.hypra-title-link {
+  text-decoration: none; /* Removes underline from links */
+  color: #9861ec; /* A shade of purple, same as your HYPRA title */
+}
+
+.hypra-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem; /* Adjust size as needed */
+  font-weight: 600; /* Semi-bold */
+}
+
+
+
+
+.header-left {
+  flex: 1;
   display: flex;
-  justify-content: center; /* Center buttons horizontally */
-  gap: 8px; /* Space between buttons */
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+/* Centered token buttons */
+.header-buttons {
+  position: absolute; /* Positioned absolutely to be in the center of the header */
+  left: 50%; /* Start from the middle */
+  transform: translateX(-50%); /* Adjust to the exact center */
+  display: flex;
+  gap: 8px;
 }
 
 .small-action-btn {
-  /* Your existing button styles */
   padding: 8px 16px;
   font-size: 0.8rem;
-  height: 38px;
-  /* Other necessary styles */
+  border-radius: 25px; /* match your design */
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC); /* Gradient background */
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+/* Connect Wallet button */
+.connect-wallet-btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  border-radius: 25px; /* match your design */
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC); /* Gradient background */
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
 }
 
 .header-instruction {
   color: #FFFFFF;
   font-size: 0.8rem;
-  text-align: center; /* Center the instructional text */
-  margin-top: 10px; /* Space after the buttons */
-  padding-bottom: 20px; /* Padding at the bottom for space */
-  width: 100%; /* Full width to ensure it's on a new line */
+  text-align: center;
+  width: 100%;
+  position: absolute; /* Position absolutely to not disturb the flex layout */
+  bottom: -30px; /* Position below the header, adjust as necessary */
+  left: 0; /* Align to the left edge */
 }
 
 .app-container {

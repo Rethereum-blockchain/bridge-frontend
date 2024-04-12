@@ -3,9 +3,6 @@ import Web3 from 'web3';
 import './App.css';
 import BN from 'bn.js';
 
-
-
-
 // Placeholder ABIs and addresses - replace these with your actual contract details
 const hypraLockboxABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_xerc20","internalType":"address"},{"type":"address","name":"_erc20","internalType":"address"},{"type":"bool","name":"_isNative","internalType":"bool"}]},{"type":"error","name":"IXERC20Lockbox_Native","inputs":[]},{"type":"error","name":"IXERC20Lockbox_NotNative","inputs":[]},{"type":"error","name":"IXERC20Lockbox_WithdrawFailed","inputs":[]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"ERC20","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"IS_NATIVE","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IPermit2"}],"name":"PERMIT2","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IXERC20"}],"name":"XERC20","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositWithPermitAllowance","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"},{"type":"address","name":"_owner","internalType":"address"},{"type":"tuple","name":"_permit","internalType":"struct IAllowanceTransfer.PermitSingle","components":[{"type":"tuple","name":"details","internalType":"struct IAllowanceTransfer.PermitDetails","components":[{"type":"address","name":"token","internalType":"address"},{"type":"uint160","name":"amount","internalType":"uint160"},{"type":"uint48","name":"expiration","internalType":"uint48"},{"type":"uint48","name":"nonce","internalType":"uint48"}]},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"sigDeadline","internalType":"uint256"}]},{"type":"bytes","name":"_signature","internalType":"bytes"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}]; // ABI for Hypra lockbox contract
 const polygonLockboxABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_xerc20","internalType":"address"},{"type":"address","name":"_erc20","internalType":"address"},{"type":"bool","name":"_isNative","internalType":"bool"}]},{"type":"error","name":"IXERC20Lockbox_Native","inputs":[]},{"type":"error","name":"IXERC20Lockbox_NotNative","inputs":[]},{"type":"error","name":"IXERC20Lockbox_WithdrawFailed","inputs":[]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"ERC20","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"IS_NATIVE","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IPermit2"}],"name":"PERMIT2","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IXERC20"}],"name":"XERC20","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositWithPermitAllowance","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"},{"type":"address","name":"_owner","internalType":"address"},{"type":"tuple","name":"_permit","internalType":"struct IAllowanceTransfer.PermitSingle","components":[{"type":"tuple","name":"details","internalType":"struct IAllowanceTransfer.PermitDetails","components":[{"type":"address","name":"token","internalType":"address"},{"type":"uint160","name":"amount","internalType":"uint160"},{"type":"uint48","name":"expiration","internalType":"uint48"},{"type":"uint48","name":"nonce","internalType":"uint48"}]},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"sigDeadline","internalType":"uint256"}]},{"type":"bytes","name":"_signature","internalType":"bytes"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}]; // ABI for Polygon lockbox contract
@@ -39,9 +36,6 @@ function App() {
   const [hypBalance, setHypBalance] = useState('0');
   const [networkChanged, setNetworkChanged] = useState(false);
 
-  
- 
-
   useEffect(() => {
     const initWeb3 = async () => {
       if (window.ethereum) {
@@ -60,10 +54,6 @@ function App() {
     };
     initWeb3();
   }, []);
-
-
-
-  
 
 
   const fetchTokenBalance = useCallback(async (tokenAddress) => {
@@ -101,12 +91,6 @@ function App() {
     }
   }, [web3, userAccount, fetchBalances, networkChanged]);
   
-  
- 
-  
-
-
-
   
   useEffect(() => {
     let checkInterval = null;
@@ -246,9 +230,6 @@ async function addHYPToken() {
 }
 
 
-
-
-
   async function connectWallet() {
     if (window.ethereum) {
       try {
@@ -275,9 +256,6 @@ async function addHYPToken() {
     }
   }
 
-  
-  
-  
 
   function isValidAmount(amount) {
     // Convert amount to a numeric value to ensure proper comparison
@@ -394,12 +372,6 @@ async function addHYPToken() {
     }
   }
   
-
-
-
-
-
-
   
   async function burnTokens() {
     setErrorMessage(''); // Reset any previous error messages
@@ -458,11 +430,6 @@ async function addHYPToken() {
         setErrorMessage(`Error during burn: ${error.message}`);
     }
 }
-
-  
-  
-
-
 
 
 async function requestAuthorization() {
@@ -530,20 +497,6 @@ async function requestAuthorization() {
 }
 
 
-  
-
-
-
-
-
-
-  
-
-  
-  
-
-
-
 function waitForAuthorization(actionId) {
   return new Promise((resolve, reject) => {
     if (!web3 || !actionId) {
@@ -577,16 +530,6 @@ function waitForAuthorization(actionId) {
   });
 }
 
-
-
-
-
-
-
-
-
-
- 
   
 async function mintTokens() {
   setErrorMessage(''); // Clear any existing error messages first
@@ -639,9 +582,6 @@ async function mintTokens() {
   }
 }
 
-
-
-
 async function depositAndInitiateBridge() {
   setDepositProgress(0); // Reset deposit progress
   setErrorMessage('');
@@ -680,7 +620,6 @@ async function depositAndInitiateBridge() {
 }
 
 
-
 async function authorizeAndCompleteBridge() {
   setAuthorizeProgress(0); // Reset authorize progress
   setErrorMessage('');
@@ -712,12 +651,6 @@ async function authorizeAndCompleteBridge() {
     setErrorMessage(error.message);
   }
 }
-
-
-
-
-
-
 
 return (
   <>
@@ -751,10 +684,10 @@ return (
       <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
       <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
       
-      {/* Display the balances for both tokens */}
+      {/* Display the balance for the selected token based on bridge direction */}
       <div>
-        <p>Your WHYP Balance: {whypBalance}</p>
-        <p>Your HYP Balance: {hypBalance}</p>
+        {bridgeDirection === 'hypraToPolygon' && <p>Your WHYP Balance: {whypBalance}</p>}
+        {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
         {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
 

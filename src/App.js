@@ -655,26 +655,21 @@ async function authorizeAndCompleteBridge() {
 return (
   <>
     <header className="app-header">
-      {/* HYPRA title in the top left */}
       <div className="header-left">
         <a href="https://www.hypra.network/" className="hypra-title-link">
           <span className="hypra-title">HYPRA</span>
         </a>
       </div>
-      {/* Placeholder div to help center the token buttons */}
       <div className="header-placeholder"></div>
-      {/* Centered token buttons */}
       <div className="header-buttons">
         <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
         <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
       </div>
-      {/* Connect Wallet button positioned to the far right */}
       <div className="connect-wallet-container">
         <button onClick={connectWallet} className="connect-wallet-btn">
           {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
         </button>
       </div>
-      {/* Instructional text below buttons */}
       <p className="header-instruction">
         Ensure you have both of these tokens imported into your wallet before using the bridge.
       </p>
@@ -684,12 +679,15 @@ return (
       <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
       <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
       
-      {/* Display the balance for the selected token based on bridge direction */}
       <div>
         {bridgeDirection === 'hypraToPolygon' && <p>Your WHYP Balance: {whypBalance}</p>}
         {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </div>
+
+      {/* Error message for insufficient funds */}
+      {amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
+    <div className="error-message">Insufficient funds for this operation.</div>
+  )}
 
       <div className="input-group">
         <label>Bridge Direction:</label>
@@ -714,7 +712,6 @@ return (
         />
       </div>
     
-      {/* Deposit & Initiate Bridge Button and Progress Bar */}
       <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)}>
         (step 1) Deposit & Initiate Bridge
       </button>
@@ -725,7 +722,6 @@ return (
         </div>
       )}
     
-      {/* Authorize & Complete Bridge Button and Progress Bar */}
       <button onClick={authorizeAndCompleteBridge} className="action-btn">
         (step 2) Authorize & Complete Bridge
       </button>
@@ -740,7 +736,7 @@ return (
       {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
     </div>
   </>
- );
+);
 
 }
 

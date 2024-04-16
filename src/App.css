@@ -349,3 +349,29 @@ input[type="text"].input-error:focus {
   margin-top: 10px; /* Space between the buttons and the text */
   text-align: center; /* Center the text if that suits your design */
 }
+
+
+.header-button {
+  padding: 12px 24px; /* Increased padding for a larger button */
+  font-size: 0.9rem; /* Optionally, you can adjust the font size as well */
+  border-radius: 25px;
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC); /* Purple gradient */
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  margin-left: 20px;
+  text-decoration: none; /* This removes the underline from the text */
+}
+
+.header-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+
+
+.wrap-hyp-container {
+  margin-top: 300px; /* Adjust this value as needed */
+}

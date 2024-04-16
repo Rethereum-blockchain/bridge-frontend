@@ -2,6 +2,10 @@ import React, { useState, useEffect, useCallback } from 'react'; // Include useC
 import Web3 from 'web3';
 import './App.css';
 import BN from 'bn.js';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import WrapHYPPage from './WrapHYPPage'; // Import the WrapHYPPage component
+
+
 
 // Placeholder ABIs and addresses - replace these with your actual contract details
 const hypraLockboxABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_xerc20","internalType":"address"},{"type":"address","name":"_erc20","internalType":"address"},{"type":"bool","name":"_isNative","internalType":"bool"}]},{"type":"error","name":"IXERC20Lockbox_Native","inputs":[]},{"type":"error","name":"IXERC20Lockbox_NotNative","inputs":[]},{"type":"error","name":"IXERC20Lockbox_WithdrawFailed","inputs":[]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"_sender","internalType":"address","indexed":false},{"type":"uint256","name":"_amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IERC20"}],"name":"ERC20","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"IS_NATIVE","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IPermit2"}],"name":"PERMIT2","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IXERC20"}],"name":"XERC20","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"depositWithPermitAllowance","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"},{"type":"address","name":"_owner","internalType":"address"},{"type":"tuple","name":"_permit","internalType":"struct IAllowanceTransfer.PermitSingle","components":[{"type":"tuple","name":"details","internalType":"struct IAllowanceTransfer.PermitDetails","components":[{"type":"address","name":"token","internalType":"address"},{"type":"uint160","name":"amount","internalType":"uint160"},{"type":"uint48","name":"expiration","internalType":"uint48"},{"type":"uint48","name":"nonce","internalType":"uint48"}]},{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"sigDeadline","internalType":"uint256"}]},{"type":"bytes","name":"_signature","internalType":"bytes"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}]; // ABI for Hypra lockbox contract
@@ -36,10 +40,14 @@ function App() {
   const [hypBalance, setHypBalance] = useState('0');
   const [networkChanged, setNetworkChanged] = useState(false);
 
+  
+ 
+
   useEffect(() => {
     const initWeb3 = async () => {
       if (window.ethereum) {
         try {
+          // Initialize web3 instance without automatically requesting accounts
           const web3Instance = new Web3(window.ethereum);
           setWeb3(web3Instance);
         } catch (error) {
@@ -52,6 +60,12 @@ function App() {
     };
     initWeb3();
   }, []);
+  
+
+
+
+  
+
 
   const fetchTokenBalance = useCallback(async (tokenAddress) => {
     if (!web3 || !userAccount) {
@@ -88,6 +102,12 @@ function App() {
     }
   }, [web3, userAccount, fetchBalances, networkChanged]);
   
+  
+ 
+  
+
+
+
   
   useEffect(() => {
     let checkInterval = null;
@@ -227,7 +247,10 @@ async function addHYPToken() {
 }
 
 
- const connectWallet = async () => {
+
+
+
+const connectWallet = async () => {
   if (window.ethereum) {
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
@@ -254,6 +277,9 @@ async function addHYPToken() {
     }
   }
 
+  
+  
+  
 
   function isValidAmount(amount) {
     // Convert amount to a numeric value to ensure proper comparison
@@ -370,6 +396,12 @@ async function addHYPToken() {
     }
   }
   
+
+
+
+
+
+
   
   async function burnTokens() {
     setErrorMessage(''); // Reset any previous error messages
@@ -428,6 +460,11 @@ async function addHYPToken() {
         setErrorMessage(`Error during burn: ${error.message}`);
     }
 }
+
+  
+  
+
+
 
 
 async function requestAuthorization() {
@@ -495,6 +532,20 @@ async function requestAuthorization() {
 }
 
 
+  
+
+
+
+
+
+
+  
+
+  
+  
+
+
+
 function waitForAuthorization(actionId) {
   return new Promise((resolve, reject) => {
     if (!web3 || !actionId) {
@@ -528,6 +579,16 @@ function waitForAuthorization(actionId) {
   });
 }
 
+
+
+
+
+
+
+
+
+
+ 
   
 async function mintTokens() {
   setErrorMessage(''); // Clear any existing error messages first
@@ -580,6 +641,9 @@ async function mintTokens() {
   }
 }
 
+
+
+
 async function depositAndInitiateBridge() {
   setDepositProgress(0); // Reset deposit progress
   setErrorMessage('');
@@ -618,6 +682,7 @@ async function depositAndInitiateBridge() {
 }
 
 
+
 async function authorizeAndCompleteBridge() {
   setAuthorizeProgress(0); // Reset authorize progress
   setErrorMessage('');
@@ -650,91 +715,106 @@ async function authorizeAndCompleteBridge() {
   }
 }
 
+
+
+
+
+
+
 return (
-  <>
-    <header className="app-header">
-      <div className="header-left">
-        <a href="https://www.hypra.network/" className="hypra-title-link">
-          <span className="hypra-title">HYPRA</span>
-        </a>
-      </div>
-      <div className="header-placeholder"></div>
-      <div className="header-buttons">
-        <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
-        <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
-      </div>
-      <div className="connect-wallet-container">
-        <button onClick={connectWallet} className="connect-wallet-btn">
-          {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
-        </button>
-      </div>
-      <p className="header-instruction">
-        Ensure you have both of these tokens imported into your wallet before using the bridge.
-      </p>
-    </header>
-
-    <div className="app-container">
-      <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
-      <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
-      
-      <div>
-        {bridgeDirection === 'hypraToPolygon' && <p>Your WHYP Balance: {whypBalance}</p>}
-        {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
-      </div>
-
-      {/* Error message for insufficient funds */}
-      {amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
-    <div className="error-message">Insufficient funds for this operation.</div>
-  )}
-
-      <div className="input-group">
-        <label>Bridge Direction:</label>
-        <select value={bridgeDirection} onChange={(e) => setBridgeDirection(e.target.value)}>
-          <option value="hypraToPolygon">Hypra to Polygon</option>
-          <option value="polygonToHypra">Polygon to Hypra</option>
-        </select>
-      </div>
-    
-      <div className="input-group">
-        <input 
-          type="text" 
-          value={amount} 
-          onChange={(e) => setAmount(e.target.value)} 
-          placeholder="Amount to transfer" 
-        />
-        <input 
-          type="text" 
-          value={recipient} 
-          onChange={(e) => setRecipient(e.target.value)} 
-          placeholder="Recipient address" 
-        />
-      </div>
-    
-      <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)}>
-        (step 1) Deposit & Initiate Bridge
-      </button>
-      {depositProgress > 0 && (
-        <div className="progress-container progress-deposit">
-          <progress value={depositProgress} max="100" className="progress-bar"></progress>
-          <p className="progress-text">Step 1: {depositProgress}%</p>
+  <Router>
+    <>
+      <header className="app-header">
+        <div className="header-left">
+          <a href="https://www.hypra.network/" className="hypra-title-link">
+            <span className="hypra-title">HYPRA</span>
+          </a>
+          <Link to="/wrap-hyp" className="header-button">Wrap your HYP</Link>
         </div>
-      )}
-    
-      <button onClick={authorizeAndCompleteBridge} className="action-btn">
-        (step 2) Authorize & Complete Bridge
-      </button>
-      {authorizeProgress > 0 && (
-        <div className="progress-container progress-authorize">
-          <progress value={authorizeProgress} max="100" className="progress-bar"></progress>
-          <p className="progress-text">Step 2: {authorizeProgress}%</p>
+        <div className="header-placeholder"></div>
+        <div className="header-buttons">
+          <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
+          <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
         </div>
-      )}
-    
-      {errorMessage && <div className="error-message">{errorMessage}</div>}
-      {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
-    </div>
-  </>
+        <div className="connect-wallet-container">
+          <button onClick={connectWallet} className="connect-wallet-btn">
+            {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
+          </button>
+        </div>
+        <p className="header-instruction">
+          Ensure you have both of these tokens imported into your wallet before using the bridge.
+        </p>
+      </header>
+
+      <Routes>
+        <Route path="/wrap-hyp" element={<WrapHYPPage />} />
+        <Route path="/" element={
+          <div className="app-container">
+            <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
+            <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
+            
+            <div>
+              {bridgeDirection === 'hypraToPolygon' && <p>Your WHYP Balance: {whypBalance}</p>}
+              {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
+            </div>
+
+            {amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
+              <div className="error-message">Insufficient funds for this operation.</div>
+            )}
+
+            <div className="input-group">
+              <label>Bridge Direction:</label>
+              <select value={bridgeDirection} onChange={(e) => setBridgeDirection(e.target.value)}>
+                <option value="hypraToPolygon">Hypra to Polygon</option>
+                <option value="polygonToHypra">Polygon to Hypra</option>
+              </select>
+            </div>
+          
+            <div className="input-group">
+              <input 
+                type="text" 
+                value={amount} 
+                onChange={(e) => setAmount(e.target.value)} 
+                placeholder="Amount to transfer" 
+              />
+              <input 
+                type="text" 
+                value={recipient} 
+                onChange={(e) => setRecipient(e.target.value)} 
+                placeholder="Recipient address" 
+              />
+            </div>
+          
+            <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)}>
+              (step 1) Deposit & Initiate Bridge
+            </button>
+            {depositProgress > 0 && (
+              <div className="progress-container progress-deposit">
+                <progress value={depositProgress} max="100" className="progress-bar"></progress>
+                <p className="progress-text">Step 1: {depositProgress}%</p>
+              </div>
+            )}
+          
+            <button onClick={authorizeAndCompleteBridge} className="action-btn">
+              (step 2) Authorize & Complete Bridge
+            </button>
+            {authorizeProgress > 0 && (
+              <div className="progress-container progress-authorize">
+                <progress value={authorizeProgress} max="100" className="progress-bar"></progress>
+                <p className="progress-text">Step 2: {authorizeProgress}%</p>
+              </div>
+            )}
+          
+            {errorMessage && <div className="error-message">{errorMessage}</div>}
+            {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
+          </div>
+        }/>
+      </Routes>
+    </>
+  </Router>
 );
+
+
 
 }
 

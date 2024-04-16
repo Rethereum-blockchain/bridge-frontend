@@ -42,8 +42,6 @@ function App() {
         try {
           const web3Instance = new Web3(window.ethereum);
           setWeb3(web3Instance);
-          const accounts = await web3Instance.eth.requestAccounts();
-          setUserAccount(accounts[0]);
         } catch (error) {
           console.error("Web3 initialization error:", error);
           setErrorMessage("Web3 initialization error: " + error.message);
@@ -54,7 +52,6 @@ function App() {
     };
     initWeb3();
   }, []);
-
 
   const fetchTokenBalance = useCallback(async (tokenAddress) => {
     if (!web3 || !userAccount) {
@@ -230,19 +227,20 @@ async function addHYPToken() {
 }
 
 
-  async function connectWallet() {
-    if (window.ethereum) {
-      try {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        setUserAccount(accounts[0]);
-        setRecipient(accounts[0]); // Prefill the recipient address with the user's address
-      } catch (error) {
-        console.error("Error connecting to MetaMask:", error);
-      }
-    } else {
-      alert("Please install MetaMask to use this feature.");
+ const connectWallet = async () => {
+  if (window.ethereum) {
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      setUserAccount(accounts[0]);
+      setRecipient(accounts[0]); // Prefill the recipient address with the user's address
+    } catch (error) {
+      console.error("Error connecting to MetaMask:", error);
+      setErrorMessage(error.message || "An error occurred during the wallet connection.");
     }
+  } else {
+    alert("Please install MetaMask to use this feature.");
   }
+};
   
 
   async function switchNetwork(targetChainId) {

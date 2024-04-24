@@ -349,3 +349,26 @@ input[type="text"].input-error:focus {
   margin-top: 10px; /* Space between the buttons and the text */
   text-align: center; /* Center the text if that suits your design */
 }
+.get-more-whyp-btn {
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  border-radius: 25px; /* Matches other buttons */
+  background: linear-gradient(145deg, #7C4DFF, #BB86FC); /* Gradient background */
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 10px; /* Space from the error message */
+}
+
+.get-more-whyp-btn:hover, .get-more-whyp-btn:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.get-more-whyp-btn:active {
+  transform: translateY(1px);
+}

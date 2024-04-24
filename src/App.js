@@ -682,10 +682,15 @@ return (
         {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
       </div>
 
-      {/* Error message for insufficient funds */}
-      {amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
-    <div className="error-message">Insufficient funds for this operation.</div>
-  )}
+      {/* Conditional error message for insufficient funds */}
+{amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
+  <div className="error-message">
+    Insufficient funds for this operation.
+    {bridgeDirection === 'hypraToPolygon' && 
+      <a href="https://whyp.hypra.network/" target="_blank" rel="noopener noreferrer" className="get-more-whyp-btn">Get more wHYP</a>
+    }
+  </div>
+)}
 
       <div className="input-group">
         <label>Bridge Direction:</label>

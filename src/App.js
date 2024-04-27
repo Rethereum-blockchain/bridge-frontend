@@ -112,7 +112,7 @@ function App() {
 
   const ensureCorrectNetwork = useCallback(async () => {
     const hypraChainIdHex = Web3.utils.toHex(622277);
-    const polygonChainIdHex = Web3.utils.toHex(80001);
+    const polygonChainIdHex = Web3.utils.toHex(80002);
     if (!web3 || !window.ethereum) return;
 
     try {
@@ -161,7 +161,7 @@ async function switchToPolygonMumbai() {
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: Web3.utils.toHex(80001) }], // Hexadecimal chainId for Polygon Mumbai
+      params: [{ chainId: Web3.utils.toHex(80002) }], // Hexadecimal chainId for Polygon Mumbai
     });
   } catch (error) {
     if (error.code === 4902) {

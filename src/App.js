@@ -451,7 +451,6 @@ async function requestAuthorization() {
     let transactionParameters = {
       from: userAccount,
       value: currentGasCost, // Dynamic gas cost fetched from the contract
-      gas: 1000000, // Adjust according to your contract method's requirements
     };
 
     if (supportsEIP1559) {
@@ -465,8 +464,7 @@ async function requestAuthorization() {
     } else {
       // For networks not supporting EIP-1559, adjust gasPrice manually
       const gasPrice = await web3.eth.getGasPrice();
-      const adjustedGasPrice = new BN(gasPrice).mul(new BN('90')).div(new BN('100'));
-      transactionParameters.gasPrice = adjustedGasPrice.toString();
+      transactionParameters.gasPrice = gasPrice;
     }
 
     await contract.methods.requestAuthorization(actionId)
@@ -661,7 +659,7 @@ return (
       <div className="header-placeholder"></div>
       <div className="header-buttons">
         <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
-        <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
+        <button onClick={addHYPToken} className="small-action-btn">Add WHYP Token (Polygon)</button>
       </div>
       <div className="connect-wallet-container">
         <button onClick={connectWallet} className="connect-wallet-btn">

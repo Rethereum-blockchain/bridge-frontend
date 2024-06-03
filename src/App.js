@@ -11,13 +11,13 @@ const polygonBridgeABI = [{"anonymous":false,"inputs":[{"indexed":true,"internal
 const erc20TokenABI = [{"type":"event","name":"Approval","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"authorized","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"destination","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"destination","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdrawal","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"fallback","stateMutability":"payable"},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"","internalType":"address"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"destination","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"address","name":"destination","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}] // The ABI for the ERC20 token you're working with 
 ; // ABI for Polygon bridge contract
 
-const hypraLockboxAddress = '0xDC74942c8DF2Ffbfa895f50547d75DBf4A29a724';
+const hypraLockboxAddress = '0x3Eb37f783E565af5Ca2221cbc80fAeeBb89880DB';
 const polygonLockboxAddress = '0x0000000000000000000000000000000000000000';
-const hypraBridgeAddress = '0x04723F1Ac2059Ee68c077BCbeb2cAD8E16DCE32a';
-const polygonBridgeAddress = '0x04723F1Ac2059Ee68c077BCbeb2cAD8E16DCE32a';
+const hypraBridgeAddress = '0x76870E3a0dF720eA6B4054956b716ed0D87F6C4f';
+const polygonBridgeAddress = '0x76870E3a0dF720eA6B4054956b716ed0D87F6C4f';
 const erc20TokenAddress = '0x0000000000079c645A9bDE0Bd8Af1775FAF5598A' // The address of the ERC20 token contract
 const WHYP_TOKEN_ADDRESS = '0x0000000000079c645A9bDE0Bd8Af1775FAF5598A'; // WHYP Token Address
-const HYP_TOKEN_ADDRESS = '0x34Ba0FC33B6E896Ffa9f1E99f389dddC0F9AB487'; // HYP Token Address
+const HYP_TOKEN_ADDRESS = '0x1fb21d3D6F1FE38FE49637E277Daf71344732bA4'; // HYP Token Address
 
 
 function App() {
@@ -112,7 +112,7 @@ function App() {
 
   const ensureCorrectNetwork = useCallback(async () => {
     const hypraChainIdHex = Web3.utils.toHex(622277);
-    const polygonChainIdHex = Web3.utils.toHex(80002);
+    const polygonChainIdHex = Web3.utils.toHex(137);
     if (!web3 || !window.ethereum) return;
 
     try {
@@ -161,7 +161,7 @@ async function switchToPolygonMumbai() {
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',
-      params: [{ chainId: Web3.utils.toHex(80002) }], // Hexadecimal chainId for Polygon Mumbai
+      params: [{ chainId: Web3.utils.toHex(137) }], // Hexadecimal chainId for Polygon Mumbai
     });
   } catch (error) {
     if (error.code === 4902) {
@@ -182,7 +182,7 @@ async function addWHYPToken() {
         type: 'ERC20',
         options: {
           address: '0x0000000000079c645A9bDE0Bd8Af1775FAF5598A', // WHYP Token Contract Address
-          symbol: 'WHYP',
+          symbol: 'wHYP',
           decimals: 18,
           image: 'URL_TO_AN_IMAGE_OF_THE_TOKEN', // Optional image URL
         },
@@ -208,7 +208,7 @@ async function addHYPToken() {
       params: {
         type: 'ERC20',
         options: {
-          address: '0x34Ba0FC33B6E896Ffa9f1E99f389dddC0F9AB487', // HYP Token Contract Address
+          address: '0x1fb21d3D6F1FE38FE49637E277Daf71344732bA4', // HYP Token Contract Address
           symbol: 'wHYP',
           decimals: 18,
           image: 'URL_TO_AN_IMAGE_OF_THE_TOKEN', // Optional image URL
@@ -436,7 +436,7 @@ async function requestAuthorization() {
     return;
   }
 
-  const targetChainId = bridgeDirection === 'hypraToPolygon' ? 80002 : 622277;
+  const targetChainId = bridgeDirection === 'hypraToPolygon' ? 137 : 622277;
   await switchNetwork(targetChainId);
 
   const contract = new web3.eth.Contract(polygonBridgeABI, polygonBridgeAddress);
@@ -456,7 +456,7 @@ async function requestAuthorization() {
     if (supportsEIP1559) {
       // If the network supports EIP-1559, set maxPriorityFeePerGas and maxFeePerGas
       const baseFeePerGas = new BN(latestBlock.baseFeePerGas);
-      const maxPriorityFeePerGas = web3.utils.toWei('2', 'gwei'); // Adjust based on network conditions
+      const maxPriorityFeePerGas = web3.utils.toWei('40', 'gwei'); // Adjust based on network conditions
       const maxFeePerGas = baseFeePerGas.add(new BN(maxPriorityFeePerGas)).toString();
 
       transactionParameters.maxPriorityFeePerGas = maxPriorityFeePerGas;
@@ -543,7 +543,7 @@ async function mintTokens() {
       bridgeAddress = hypraBridgeAddress;
       bridgeABI = hypraBridgeABI;
     } else {
-      targetChainId = 80002; // Polygon Mumbai Testnet Chain ID
+      targetChainId = 137; // Polygon Mumbai Testnet Chain ID
       bridgeAddress = polygonBridgeAddress;
       bridgeABI = polygonBridgeABI;
     }
@@ -659,7 +659,7 @@ return (
       <div className="header-placeholder"></div>
       <div className="header-buttons">
         <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
-        <button onClick={addHYPToken} className="small-action-btn">Add WHYP Token (Polygon)</button>
+        <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
       </div>
       <div className="connect-wallet-container">
         <button onClick={connectWallet} className="connect-wallet-btn">
@@ -672,7 +672,7 @@ return (
     </header>
 
     <div className="app-container">
-      <h1 className="artistic-text">HYPRA Bridge (TEST)</h1>
+      <h1 className="artistic-text">HYPRA Bridge (Beta)</h1>
       <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
       
       <div>

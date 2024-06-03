@@ -443,29 +443,13 @@ async function requestAuthorization() {
 
   try {
     const currentGasCost = await contract.methods.gasCost().call();
-
-    // Check if the network supports EIP-1559
-    const latestBlock = await web3.eth.getBlock('latest');
-    const supportsEIP1559 = Boolean(latestBlock.baseFeePerGas);
+    const gasPrice = await web3.eth.getGasPrice(); // Fetch current gas price from the network
 
     let transactionParameters = {
       from: userAccount,
       value: currentGasCost, // Dynamic gas cost fetched from the contract
+      gasPrice: gasPrice  // Use legacy gasPrice for all transactions
     };
-
-    if (supportsEIP1559) {
-      // If the network supports EIP-1559, set maxPriorityFeePerGas and maxFeePerGas
-      const baseFeePerGas = new BN(latestBlock.baseFeePerGas);
-      const maxPriorityFeePerGas = web3.utils.toWei('40', 'gwei'); // Adjust based on network conditions
-      const maxFeePerGas = baseFeePerGas.add(new BN(maxPriorityFeePerGas)).toString();
-
-      transactionParameters.maxPriorityFeePerGas = maxPriorityFeePerGas;
-      transactionParameters.maxFeePerGas = maxFeePerGas;
-    } else {
-      // For networks not supporting EIP-1559, adjust gasPrice manually
-      const gasPrice = await web3.eth.getGasPrice();
-      transactionParameters.gasPrice = gasPrice;
-    }
 
     await contract.methods.requestAuthorization(actionId)
       .send(transactionParameters)
@@ -658,7 +642,7 @@ return (
       </div>
       <div className="header-placeholder"></div>
       <div className="header-buttons">
-        <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
+        <button onClick={addWHYPToken} className="small-action-btn">Add wHYP Token (Hypra)</button>
         <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
       </div>
       <div className="connect-wallet-container">
@@ -672,12 +656,12 @@ return (
     </header>
 
     <div className="app-container">
-      <h1 className="artistic-text">HYPRA Bridge (Beta)</h1>
-      <p className="subtitle-text">This bridge allows you to send wrapped HYP (WHYP) between Hypra and Polygon.</p>
+      <h1 className="artistic-text">HYPRA Bridge (beta)</h1>
+      <p className="subtitle-text">This bridge allows you to send wrapped HYP (wHYP) between Hypra and Polygon.</p>
       
       <div>
-        {bridgeDirection === 'hypraToPolygon' && <p>Your WHYP Balance: {whypBalance}</p>}
-        {bridgeDirection === 'polygonToHypra' && <p>Your HYP Balance: {hypBalance}</p>}
+        {bridgeDirection === 'hypraToPolygon' && <p>Your wHYP Balance: {whypBalance}</p>}
+        {bridgeDirection === 'polygonToHypra' && <p>Your wHYP Balance: {hypBalance}</p>}
       </div>
 
       {/* Conditional error message for insufficient funds */}

@@ -535,7 +535,6 @@ async function mintTokens() {
     await switchNetwork(targetChainId);
 
     const contract = new web3.eth.Contract(bridgeABI, bridgeAddress);
-
     const gasPrice = await web3.eth.getGasPrice();
     const amountInWei = web3.utils.toWei(amount.toString(), 'ether');
 
@@ -545,6 +544,12 @@ async function mintTokens() {
       .on('receipt', async (receipt) => {
         console.log('Mint successful', receipt);
         setErrorMessage(''); // Clear error message on successful transaction
+
+        // Check if the transaction was successful
+        if (receipt.status) {
+          // Refresh the page to reflect the changes
+          window.location.reload();
+        }
 
         // If bridging from Polygon to Hypra, perform the withdraw action after minting
         if (bridgeDirection === 'polygonToHypra') {
@@ -561,6 +566,7 @@ async function mintTokens() {
     setErrorMessage(`Error during minting: ${error.message}`);
   }
 }
+
 
 async function depositAndInitiateBridge() {
   setDepositProgress(0); // Reset deposit progress

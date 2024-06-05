@@ -651,7 +651,8 @@ return (
         </button>
       </div>
       <p className="header-instruction">
-        Ensure you have both of these tokens imported into your wallet before using the bridge.
+        Ensure you have both of these tokens imported into your wallet before using the bridge.<br />
+    Also, make sure you have enough HYP and MATIC to cover the gas fees on both chains.
       </p>
     </header>
 
@@ -693,7 +694,7 @@ return (
           type="text" 
           value={recipient} 
           onChange={(e) => setRecipient(e.target.value)} 
-          placeholder="Recipient address" 
+          placeholder="Connect wallet" 
         />
       </div>
     

@@ -372,3 +372,36 @@ input[type="text"].input-error:focus {
 .get-more-whyp-btn:active {
   transform: translateY(1px);
 }
+.hypra-title {
+  color: #9861ec; /* Purple, similar to your button hover color */
+  font-family: 'Poppins', sans-serif; /* Stylish, modern sans-serif font */
+  font-size: 2rem; /* Larger text size for visibility */
+  font-weight: bold; /* Bold text for better legibility */
+  margin-right: 20px; /* Adds some space between the text and the first button */
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Ensures content starts from the left and only takes necessary space */
+  flex: none; /* Stops the div from growing to fill the space */
+}
+
+.header-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  font-size: 0.8rem;
+  padding: 5px 10px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 25px;
+  transition: all 0.2s ease-in-out;
+  width: auto; /* Ensure button only takes the width of its content */
+  flex-shrink: 0; /* Prevents the button from shrinking below its minimum content size */
+}
+
+.header-button:hover {
+  background-color: #f99007; /* Orange for hover */
+  color: black;
+}

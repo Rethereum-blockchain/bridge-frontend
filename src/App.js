@@ -641,26 +641,27 @@ async function authorizeAndCompleteBridge() {
 return (
   <>
     <header className="app-header">
-      <div className="header-left">
-        <a href="https://www.hypra.network/" className="hypra-title-link">
-          <span className="hypra-title">HYPRA</span>
-        </a>
-      </div>
-      <div className="header-placeholder"></div>
-      <div className="header-buttons">
-        <button onClick={addWHYPToken} className="small-action-btn">Add wHYP Token (Hypra)</button>
-        <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
-      </div>
-      <div className="connect-wallet-container">
-        <button onClick={connectWallet} className="connect-wallet-btn">
-          {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
-        </button>
-      </div>
-      <p className="header-instruction">
-        Ensure you have both of these tokens imported into your wallet before using the bridge.<br />
+  <div className="header-left">
+    <span className="hypra-title">HYPRA</span> {/* Stylish rendering of your brand name */}
+    <button onClick={() => window.location.href = 'https://www.hypra.network/'} className="header-button">Home</button>
+    <button onClick={() => window.location.href = 'https://explorer.hypra.network/'} className="header-button">Explorer</button>
+    <button onClick={() => window.location.href = 'https://whyp.hypra.network/'} className="header-button">Wrapping</button>
+  </div>
+  <div className="header-placeholder"></div>
+  <div className="header-buttons">
+    <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
+    <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
+  </div>
+  <div className="connect-wallet-container">
+    <button onClick={connectWallet} className="connect-wallet-btn">
+      {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
+    </button>
+  </div>
+  <p className="header-instruction">
+    Ensure you have both of these tokens imported into your wallet before using the bridge.<br />
     Also, make sure you have enough HYP and MATIC to cover the gas fees on both chains.
-      </p>
-    </header>
+  </p>
+</header>
 
     <div className="app-container">
       <h1 className="artistic-text">HYPRA Bridge (beta)</h1>

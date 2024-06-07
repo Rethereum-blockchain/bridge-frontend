@@ -405,3 +405,44 @@ input[type="text"].input-error:focus {
   background-color: #f99007; /* Orange for hover */
   color: black;
 }
+@media (max-width: 768px) {
+  .app-header {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .header-left, .header-buttons, .connect-wallet-container {
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-button, .small-action-btn, .connect-wallet-btn {
+    width: 100%;  /* Adjust width to full to prevent overflow */
+    margin: 8px 0; /* Adjust margin for better spacing */
+  }
+
+  .header-instruction {
+    position: static;
+    bottom: auto;
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .hypra-title {
+    margin-bottom: 10px; /* Add spacing between the title and the buttons */
+  }
+
+  .header-buttons {
+    position: relative;
+    transform: none;
+    left: auto;
+    flex-wrap: wrap; /* Allow the buttons to wrap if space is insufficient */
+  }
+
+  .app-container {
+    margin-top: 500px; /* Increased margin-top to accommodate the expanded header */
+  }
+}

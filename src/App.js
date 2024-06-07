@@ -649,8 +649,8 @@ return (
   </div>
   <div className="header-placeholder"></div>
   <div className="header-buttons">
-    <button onClick={addWHYPToken} className="small-action-btn">Add WHYP Token (Hypra)</button>
-    <button onClick={addHYPToken} className="small-action-btn">Add HYP Token (Polygon)</button>
+    <button onClick={addWHYPToken} className="small-action-btn">Add wHYP Token (Hypra)</button>
+    <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
   </div>
   <div className="connect-wallet-container">
     <button onClick={connectWallet} className="connect-wallet-btn">

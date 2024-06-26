@@ -9,6 +9,7 @@ const polygonLockboxABI = [{"type":"constructor","stateMutability":"nonpayable",
 const hypraBridgeABI = [{"type":"event","name":"ActionConsumed","inputs":[{"type":"bytes32","name":"id","internalType":"bytes32","indexed":true},{"type":"uint256","name":"nonce","internalType":"uint256","indexed":true},{"type":"address","name":"receiver","internalType":"address","indexed":false},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"ActionCreated","inputs":[{"type":"bytes32","name":"id","internalType":"bytes32","indexed":true},{"type":"uint256","name":"nonce","internalType":"uint256","indexed":true},{"type":"address","name":"receiver","internalType":"address","indexed":false},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"ActionRequested","inputs":[{"type":"bytes32","name":"id","internalType":"bytes32","indexed":true}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"actionCounter","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"actions","inputs":[{"type":"bytes32","name":"","internalType":"bytes32"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"success","internalType":"bool"}],"name":"authorizeAction","inputs":[{"type":"bytes32","name":"action","internalType":"bytes32"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"authorizedActions","inputs":[{"type":"bytes32","name":"","internalType":"bytes32"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bytes32","name":"actionId","internalType":"bytes32"}],"name":"burn","inputs":[{"type":"address","name":"_recipient","internalType":"address"},{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"consumedActions","inputs":[{"type":"bytes32","name":"","internalType":"bytes32"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"gasCost","inputs":[]},{"type":"function","stateMutability":"pure","outputs":[{"type":"bytes32","name":"actionId","internalType":"bytes32"}],"name":"getActionId","inputs":[{"type":"uint256","name":"chainId","internalType":"uint256"},{"type":"uint256","name":"_nonce","internalType":"uint256"},{"type":"address","name":"_recipient","internalType":"address"},{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"chainId","internalType":"uint256"}],"name":"getChainId","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"init","inputs":[{"type":"uint256","name":"_peer","internalType":"uint256"},{"type":"address","name":"xerc20","internalType":"address"},{"type":"address","name":"_admin","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"success","internalType":"bool"}],"name":"mint","inputs":[{"type":"address","name":"_recipient","internalType":"address"},{"type":"uint256","name":"nonce","internalType":"uint256"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"oracleAdmin","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"peerChain","inputs":[]},{"type":"function","stateMutability":"payable","outputs":[{"type":"bool","name":"success","internalType":"bool"}],"name":"requestAuthorization","inputs":[{"type":"bytes32","name":"action","internalType":"bytes32"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setGas","inputs":[{"type":"uint256","name":"_gasCost","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"xToken","inputs":[]}]; // ABI for Hypra bridge contract
 const polygonBridgeABI = [{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"id","type":"bytes32"},{"indexed":true,"internalType":"uint256","name":"nonce","type":"uint256"},{"indexed":false,"internalType":"address","name":"receiver","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ActionConsumed","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"id","type":"bytes32"},{"indexed":true,"internalType":"uint256","name":"nonce","type":"uint256"},{"indexed":false,"internalType":"address","name":"receiver","type":"address"},{"indexed":false,"internalType":"uint256","name":"amount","type":"uint256"}],"name":"ActionCreated","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"id","type":"bytes32"}],"name":"ActionRequested","type":"event"},{"inputs":[],"name":"actionCounter","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"actions","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"action","type":"bytes32"}],"name":"authorizeAction","outputs":[{"internalType":"bool","name":"success","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"authorizedActions","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_recipient","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"burn","outputs":[{"internalType":"bytes32","name":"actionId","type":"bytes32"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"name":"consumedActions","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"gasCost","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"chainId","type":"uint256"},{"internalType":"uint256","name":"_nonce","type":"uint256"},{"internalType":"address","name":"_recipient","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"getActionId","outputs":[{"internalType":"bytes32","name":"actionId","type":"bytes32"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"chainId","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"_peer","type":"uint256"},{"internalType":"address","name":"xerc20","type":"address"},{"internalType":"address","name":"_admin","type":"address"}],"name":"init","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_recipient","type":"address"},{"internalType":"uint256","name":"nonce","type":"uint256"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"mint","outputs":[{"internalType":"bool","name":"success","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"oracleAdmin","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"peerChain","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"action","type":"bytes32"}],"name":"requestAuthorization","outputs":[{"internalType":"bool","name":"success","type":"bool"}],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_gasCost","type":"uint256"}],"name":"setGas","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"xToken","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]
 const erc20TokenABI = [{"type":"event","name":"Approval","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"authorized","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"destination","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"destination","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdrawal","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"fallback","stateMutability":"payable"},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"","internalType":"address"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"payable","outputs":[],"name":"deposit","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"destination","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"from","internalType":"address"},{"type":"address","name":"destination","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"receive","stateMutability":"payable"}] // The ABI for the ERC20 token you're working with 
+const xERC20ABI = [{"inputs":[{"internalType":"string","name":"_name","type":"string"},{"internalType":"string","name":"_symbol","type":"string"},{"internalType":"uint8","name":"_decimals","type":"uint8"},{"internalType":"address","name":"_factory","type":"address"}],"stateMutability":"nonpayable","type":"constructor"},{"inputs":[],"name":"IXERC20_NotFactory","type":"error"},{"inputs":[],"name":"IXERC20_NotHighEnoughLimits","type":"error"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"uint256","name":"_mintingLimit","type":"uint256"},{"indexed":false,"internalType":"uint256","name":"_burningLimit","type":"uint256"},{"indexed":true,"internalType":"address","name":"_bridge","type":"address"}],"name":"BridgeLimitsSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"_lockbox","type":"address"}],"name":"LockboxSet","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"DOMAIN_SEPARATOR","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"FACTORY","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"","type":"address"}],"name":"bridges","outputs":[{"components":[{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"ratePerSecond","type":"uint256"},{"internalType":"uint256","name":"maxLimit","type":"uint256"},{"internalType":"uint256","name":"currentLimit","type":"uint256"}],"internalType":"struct IXERC20.BridgeParameters","name":"minterParams","type":"tuple"},{"components":[{"internalType":"uint256","name":"timestamp","type":"uint256"},{"internalType":"uint256","name":"ratePerSecond","type":"uint256"},{"internalType":"uint256","name":"maxLimit","type":"uint256"},{"internalType":"uint256","name":"currentLimit","type":"uint256"}],"internalType":"struct IXERC20.BridgeParameters","name":"burnerParams","type":"tuple"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"burn","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_bridge","type":"address"}],"name":"burningCurrentLimitOf","outputs":[{"internalType":"uint256","name":"_limit","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_bridge","type":"address"}],"name":"burningMaxLimitOf","outputs":[{"internalType":"uint256","name":"_limit","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"lockbox","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_user","type":"address"},{"internalType":"uint256","name":"_amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_bridge","type":"address"}],"name":"mintingCurrentLimitOf","outputs":[{"internalType":"uint256","name":"_limit","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"_bridge","type":"address"}],"name":"mintingMaxLimitOf","outputs":[{"internalType":"uint256","name":"_limit","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"}],"name":"nonces","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"value","type":"uint256"},{"internalType":"uint256","name":"deadline","type":"uint256"},{"internalType":"uint8","name":"v","type":"uint8"},{"internalType":"bytes32","name":"r","type":"bytes32"},{"internalType":"bytes32","name":"s","type":"bytes32"}],"name":"permit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_bridge","type":"address"},{"internalType":"uint256","name":"_mintingLimit","type":"uint256"},{"internalType":"uint256","name":"_burningLimit","type":"uint256"}],"name":"setLimits","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_lockbox","type":"address"}],"name":"setLockbox","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"from","type":"address"},{"internalType":"address","name":"to","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"}];
 ; // ABI for Polygon bridge contract
 
 const hypraLockboxAddress = '0x3Eb37f783E565af5Ca2221cbc80fAeeBb89880DB';
@@ -35,6 +36,46 @@ function App() {
   const [whypBalance, setWhypBalance] = useState('0');
   const [hypBalance, setHypBalance] = useState('0');
   const [networkChanged, setNetworkChanged] = useState(false);
+  const [bridgeLimits, setBridgeLimits] = useState({ burnLimit: '0', mintLimit: '0' });
+  const [limitError, setLimitError] = useState('');
+
+
+  
+  const fetchBridgeLimits = useCallback(async (action) => {
+    if (!web3) {
+      console.error("Web3 is not initialized");
+      return '0';
+    }
+
+    const hypraXERC20Address = '0x8ADf314372e80a1010F738260412b0E6bf64c5CA';
+    const polygonXERC20Address = '0x1fb21d3D6F1FE38FE49637E277Daf71344732bA4';
+    const xERC20Address = bridgeDirection === 'hypraToPolygon' ? hypraXERC20Address : polygonXERC20Address;
+    console.log("Fetching limits for XERC20 at address:", xERC20Address);
+
+    const xERC20Contract = new web3.eth.Contract(xERC20ABI, xERC20Address);
+    try {
+      if (action === 'burn') {
+        console.log("Calling burningCurrentLimitOf for action:", action);
+        const limit = await xERC20Contract.methods.burningCurrentLimitOf(bridgeDirection === 'hypraToPolygon' ? hypraBridgeAddress : polygonBridgeAddress).call();
+        console.log(`Burning limit: ${limit}`);
+        return web3.utils.fromWei(limit, 'ether'); // Convert BN to string
+      } else if (action === 'mint') {
+        console.log("Calling mintingCurrentLimitOf for action:", action);
+        const limit = await xERC20Contract.methods.mintingCurrentLimitOf(bridgeDirection === 'hypraToPolygon' ? hypraBridgeAddress : polygonBridgeAddress).call();
+        console.log(`Minting limit: ${limit}`);
+        return web3.utils.fromWei(limit, 'ether'); // Convert BN to string
+      }
+    } catch (error) {
+      console.error("Failed to fetch limits:", error);
+      setErrorMessage(`Failed to fetch limits: ${error.message}`);
+
+      if (error.data) {
+        console.error("Error data:", error.data);
+      }
+
+      return '0';
+    }
+  }, [web3, bridgeDirection]);
 
   useEffect(() => {
     const initWeb3 = async () => {
@@ -52,6 +93,24 @@ function App() {
     };
     initWeb3();
   }, []);
+
+  useEffect(() => {
+    const fetchLimits = async () => {
+      const burnLimit = await fetchBridgeLimits('burn');
+      const mintLimit = await fetchBridgeLimits('mint');
+      setBridgeLimits({ burnLimit, mintLimit });
+    };
+
+    if (web3 && bridgeDirection) {
+      fetchLimits();
+    }
+  }, [web3, bridgeDirection, fetchBridgeLimits, networkChanged]);
+
+  useEffect(() => {
+    console.log("Bridge Limits updated:", bridgeLimits);
+  }, [bridgeLimits]);
+  
+  
 
   const fetchTokenBalance = useCallback(async (tokenAddress) => {
     if (!web3 || !userAccount) {
@@ -569,7 +628,7 @@ async function mintTokens() {
 
 
 async function depositAndInitiateBridge() {
-  setDepositProgress(0); // Reset deposit progress
+  setDepositProgress(0);
   setErrorMessage('');
 
   if (!web3 || !isValidAddress(recipient) || !isValidAmount(amount)) {
@@ -577,33 +636,35 @@ async function depositAndInitiateBridge() {
     return;
   }
 
+  if (parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? bridgeLimits.burnLimit : bridgeLimits.mintLimit)) {
+    setLimitError("Amount exceeds the bridge limit.");
+    return;
+  }
+
   try {
     await ensureCorrectNetwork();
-    setDepositProgress(25); // Network ensured, progress updated
+    setDepositProgress(25);
 
     if (bridgeDirection === 'hypraToPolygon') {
-      // For "Hypra to Polygon", perform deposit then burn
-      await depositTokens(); // Deposit action specific to Hypra to Polygon
-      setDepositProgress(50); // Deposit completed, progress updated
-      
-      await burnTokens();
-      setDepositProgress(75); // Burn completed, progress updated
+      await depositTokens();
+      setDepositProgress(50);
 
-      // Optionally, you could wait for a confirmation event here before setting to 100%
-      setDepositProgress(100); // Process completed
+      await burnTokens();
+      setDepositProgress(75);
+
+      setDepositProgress(100);
     } else {
-      // For "Polygon to Hypra", directly start with the burn step
       await burnTokens();
-      setDepositProgress(50); // Burn completed, progress updated
+      setDepositProgress(50);
 
-      // Optionally, you could wait for a confirmation event here before setting to 100%
-      setDepositProgress(100); // Process completed
+      setDepositProgress(100);
     }
   } catch (error) {
     console.error("Error in deposit and initiate bridge:", error);
     setErrorMessage(error.message || "An error occurred during the deposit and initiate bridge process.");
   }
 }
+
 
 
 async function authorizeAndCompleteBridge() {
@@ -641,46 +702,54 @@ async function authorizeAndCompleteBridge() {
 return (
   <>
     <header className="app-header">
-  <div className="header-left">
-    <span className="hypra-title">HYPRA</span> {/* Stylish rendering of your brand name */}
-    <button onClick={() => window.location.href = 'https://www.hypra.network/'} className="header-button">Home</button>
-    <button onClick={() => window.location.href = 'https://explorer.hypra.network/'} className="header-button">Explorer</button>
-    <button onClick={() => window.location.href = 'https://whyp.hypra.network/'} className="header-button">Wrapping</button>
-  </div>
-  <div className="header-placeholder"></div>
-  <div className="header-buttons">
-    <button onClick={addWHYPToken} className="small-action-btn">Add wHYP Token (Hypra)</button>
-    <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
-  </div>
-  <div className="connect-wallet-container">
-    <button onClick={connectWallet} className="connect-wallet-btn">
-      {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
-    </button>
-  </div>
-  <p className="header-instruction">
-    Ensure you have both of these tokens imported into your wallet before using the bridge.<br />
-    Also, make sure you have enough HYP and MATIC to cover the gas fees on both chains.
-  </p>
-</header>
+      <div className="header-left">
+        <span className="hypra-title">HYPRA</span>
+        <button onClick={() => window.location.href = 'https://www.hypra.network/'} className="header-button">Home</button>
+        <button onClick={() => window.location.href = 'https://explorer.hypra.network/'} className="header-button">Explorer</button>
+        <button onClick={() => window.location.href = 'https://whyp.hypra.network/'} className="header-button">Wrapping</button>
+      </div>
+      <div className="header-placeholder"></div>
+      <div className="header-buttons">
+        <button onClick={addWHYPToken} className="small-action-btn">Add wHYP Token (Hypra)</button>
+        <button onClick={addHYPToken} className="small-action-btn">Add wHYP Token (Polygon)</button>
+      </div>
+      <div className="connect-wallet-container">
+        <button onClick={connectWallet} className="connect-wallet-btn">
+          {userAccount ? 'Wallet Connected' : 'Connect Wallet'}
+        </button>
+      </div>
+      <p className="header-instruction">
+        Ensure you have both of these tokens imported into your wallet before using the bridge.<br />
+        Also, make sure you have enough HYP and MATIC to cover the gas fees on both chains.
+      </p>
+    </header>
 
     <div className="app-container">
       <h1 className="artistic-text">HYPRA Bridge (beta)</h1>
       <p className="subtitle-text">This bridge allows you to send wrapped HYP (wHYP) between Hypra and Polygon.</p>
-      
+
       <div>
         {bridgeDirection === 'hypraToPolygon' && <p>Your wHYP Balance: {whypBalance}</p>}
         {bridgeDirection === 'polygonToHypra' && <p>Your wHYP Balance: {hypBalance}</p>}
       </div>
 
-      {/* Conditional error message for insufficient funds */}
-{amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
-  <div className="error-message">
-    Insufficient funds for this operation.
-    {bridgeDirection === 'hypraToPolygon' && 
-      <a href="https://whyp.hypra.network/" target="_blank" rel="noopener noreferrer" className="get-more-whyp-btn">Get more wHYP</a>
-    }
-  </div>
-)}
+      {limitError && (
+        <div>
+          <h1>Bridge Limits</h1>
+          <p>Burning Limit: {bridgeLimits.burnLimit}</p>
+          <p>Minting Limit: {bridgeLimits.mintLimit}</p>
+          <div className="error-message">{limitError}</div>
+        </div>
+      )}
+
+      {amount && recipient && parseFloat(amount) > 0 && (!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)) && (
+        <div className="error-message">
+          Insufficient funds for this operation.
+          {bridgeDirection === 'hypraToPolygon' &&
+            <a href="https://whyp.hypra.network/" target="_blank" rel="noopener noreferrer" className="get-more-whyp-btn">Get more wHYP</a>
+          }
+        </div>
+      )}
 
       <div className="input-group">
         <label>Bridge Direction:</label>
@@ -689,23 +758,30 @@ return (
           <option value="polygonToHypra">Polygon to Hypra</option>
         </select>
       </div>
-    
+
       <div className="input-group">
         <input 
           type="text" 
           value={amount} 
-          onChange={(e) => setAmount(e.target.value)} 
+          onChange={(e) => {
+            setAmount(e.target.value);
+            if (parseFloat(e.target.value) > parseFloat(bridgeDirection === 'hypraToPolygon' ? bridgeLimits.burnLimit : bridgeLimits.mintLimit)) {
+              setLimitError("Amount exceeds the bridge limit.");
+            } else {
+              setLimitError('');
+            }
+          }} 
           placeholder="Amount to transfer" 
         />
         <input 
           type="text" 
           value={recipient} 
           onChange={(e) => setRecipient(e.target.value)} 
-          placeholder="Connect wallet" 
+          placeholder="Connect Wallet" 
         />
       </div>
-    
-      <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance)}>
+
+      <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance) || limitError}>
         (step 1) Deposit & Initiate Bridge
       </button>
       {depositProgress > 0 && (
@@ -714,8 +790,8 @@ return (
           <p className="progress-text">Step 1: {depositProgress}%</p>
         </div>
       )}
-    
-      <button onClick={authorizeAndCompleteBridge} className="action-btn">
+
+      <button onClick={authorizeAndCompleteBridge} className="action-btn" disabled={limitError}>
         (step 2) Authorize & Complete Bridge
       </button>
       {authorizeProgress > 0 && (
@@ -724,7 +800,7 @@ return (
           <p className="progress-text">Step 2: {authorizeProgress}%</p>
         </div>
       )}
-    
+
       {errorMessage && <div className="error-message">{errorMessage}</div>}
       {frontendMessage && <div className="frontend-message">{frontendMessage}</div>}
     </div>

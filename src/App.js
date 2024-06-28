@@ -94,23 +94,6 @@ function App() {
     initWeb3();
   }, []);
 
-  useEffect(() => {
-    const fetchLimits = async () => {
-      const burnLimit = await fetchBridgeLimits('burn');
-      const mintLimit = await fetchBridgeLimits('mint');
-      setBridgeLimits({ burnLimit, mintLimit });
-    };
-
-    if (web3 && bridgeDirection) {
-      fetchLimits();
-    }
-  }, [web3, bridgeDirection, fetchBridgeLimits, networkChanged]);
-
-  useEffect(() => {
-    console.log("Bridge Limits updated:", bridgeLimits);
-  }, [bridgeLimits]);
-  
-  
 
   const fetchTokenBalance = useCallback(async (tokenAddress) => {
     if (!web3 || !userAccount) {
@@ -148,6 +131,32 @@ function App() {
   }, [web3, userAccount, fetchBalances, networkChanged]);
   
   
+  useEffect(() => {
+    const fetchLimits = async () => {
+      const burnLimit = await fetchBridgeLimits('burn');
+      const mintLimit = await fetchBridgeLimits('mint');
+      setBridgeLimits({ burnLimit, mintLimit });
+    };
+  
+    if (web3 && userAccount && bridgeDirection) {
+      fetchLimits();
+    }
+  }, [web3, userAccount, bridgeDirection, fetchBridgeLimits, networkChanged]);  // Add userAccount as a dependency
+
+  
+
+  useEffect(() => {
+    if (window.ethereum) {
+      console.log("Web3 is available, waiting for wallet connection...");
+      // We're not creating a web3Instance here anymore because it's set in connectWallet
+    } else {
+      setErrorMessage("Please install MetaMask to use this application.");
+    }
+  }, []);
+  
+  
+
+
   useEffect(() => {
     let checkInterval = null;
   
@@ -286,12 +295,14 @@ async function addHYPToken() {
 }
 
 
- const connectWallet = async () => {
+const connectWallet = async () => {
   if (window.ethereum) {
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       setUserAccount(accounts[0]);
       setRecipient(accounts[0]); // Prefill the recipient address with the user's address
+      const web3Instance = new Web3(window.ethereum);
+      setWeb3(web3Instance); // Set web3 now that the wallet is connected
     } catch (error) {
       console.error("Error connecting to MetaMask:", error);
       setErrorMessage(error.message || "An error occurred during the wallet connection.");
@@ -300,6 +311,7 @@ async function addHYPToken() {
     alert("Please install MetaMask to use this feature.");
   }
 };
+
   
 
   async function switchNetwork(targetChainId) {
@@ -760,26 +772,32 @@ return (
       </div>
 
       <div className="input-group">
-        <input 
-          type="text" 
-          value={amount} 
-          onChange={(e) => {
-            setAmount(e.target.value);
-            if (parseFloat(e.target.value) > parseFloat(bridgeDirection === 'hypraToPolygon' ? bridgeLimits.burnLimit : bridgeLimits.mintLimit)) {
-              setLimitError("Amount exceeds the bridge limit.");
-            } else {
-              setLimitError('');
-            }
-          }} 
-          placeholder="Amount to transfer" 
-        />
-        <input 
-          type="text" 
-          value={recipient} 
-          onChange={(e) => setRecipient(e.target.value)} 
-          placeholder="Connect Wallet" 
-        />
-      </div>
+  {!userAccount && (
+    <p className="warning-message">Please connect your wallet to proceed.</p>
+  )}
+  <input 
+    type="text" 
+    value={amount}
+    readOnly={!userAccount}  // Makes the field read-only if the wallet is not connected
+    onChange={(e) => {
+      setAmount(e.target.value);
+      if (parseFloat(e.target.value) > parseFloat(bridgeDirection === 'hypraToPolygon' ? bridgeLimits.burnLimit : bridgeLimits.mintLimit)) {
+        setLimitError("Amount exceeds the bridge limit.");
+      } else {
+        setLimitError('');
+      }
+    }} 
+    placeholder="Amount to transfer" 
+  />
+  <input 
+    type="text" 
+    value={recipient}
+    readOnly={!userAccount}  // Optionally make this read-only too until wallet is connected
+    onChange={(e) => setRecipient(e.target.value)} 
+    placeholder={userAccount ? "Enter recipient address" : "Connect wallet to set recipient"}
+  />
+</div>
+
 
       <button onClick={depositAndInitiateBridge} className="action-btn" disabled={!amount || parseFloat(amount) > parseFloat(bridgeDirection === 'hypraToPolygon' ? whypBalance : hypBalance) || limitError}>
         (step 1) Deposit & Initiate Bridge
